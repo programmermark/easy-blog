@@ -1,0 +1,119 @@
+/* 文章内容样式 */
+.article-content {
+  text-align: left;
+  padding: 1rem;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+  font-weight: bold;
+  line-height: 1.5;
+  margin-top: 35px;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+
+.article-content h4 {
+  font-size: 16px;
+}
+
+.article-content img {
+  width: 100%;
+  margin: 1rem 0;
+  border: 1px solid rgb(243, 244, 246);
+  border-radius: 4px;
+}
+
+/* 美化markdown */
+.article-content p {
+  font-size: 15px;
+  margin: 22px 0;
+}
+
+.article-content ol {
+  list-style: auto;
+  padding-left: 28px;
+}
+
+.article-content ul {
+  list-style: auto;
+  padding-left: 28px;
+}
+
+.article-content li {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.article-content pre {
+  display: block;
+  background-color: #283646;
+  padding: 0.5rem !important;
+  overflow-y: auto;
+  font-weight: 300;
+  font-family: Menlo, monospace;
+  border-radius: 0.3rem;
+}
+
+.article-content pre > code {
+  border: 0px !important;
+  background-color: #283646 !important;
+  color: #fff;
+}
+
+.article-content code {
+  color: #c7254e;
+  background-color: #f9f2f4;
+  border-radius: 4px;
+  font-size: 12px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 0px 3px;
+  width: calc(100% - 10px);
+  box-sizing: border-box;
+}
+
+.article-content a {
+  text-decoration: none;
+  color: #0269c8;
+  border-bottom: 1px solid #d1e9ff;
+}
+
+.article-content blockquote {
+  color: #666;
+  padding: 1px 23px;
+  margin: 22px 0;
+  border-left: 4px solid #cbcbcb;
+  background-color: #f8f8f8;
+}
+
+.article-content table {
+  display: inline-block !important;
+  font-size: 12px;
+  width: auto;
+  max-width: 100%;
+  overflow: auto;
+  border: 1px solid #f6f6f6;
+}
+
+.article-content thead {
+  background: #f6f6f6;
+  color: #000;
+  text-align: left;
+}
+
+.article-content td,
+.article-content th {
+  padding: 12px 7px;
+  line-height: 24px;
+}
+
+.article-content td {
+  min-width: 120px;
+}
