@@ -1,0 +1,166 @@
+name: Deploy Easy Blog
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # 测试阶段
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: easy_blog_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: |
+          cd easy-blog-service
+          pnpm install
+
+      - name: Run tests
+        run: |
+          cd easy-blog-service
+          pnpm run test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/easy_blog_test?schema=public
+          JWT_SECRET: test-secret
+          REDIS_URL: redis://localhost:6379
+
+  # 构建和推送镜像
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./easy-blog-service
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./easy-blog-front
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push admin image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./easy-blog-admin
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-admin:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # 部署到服务器
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            # 进入项目目录
+            cd /opt/easy-blog
+
+            # 写入/更新 compose 环境变量（用于镜像地址变量替换）
+            # REGISTRY 例如: ghcr.io
+            # IMAGE_NAME 例如: owner/repo
+            touch .env
+            if grep -q '^REGISTRY=' .env; then
+              sed -i 's/^REGISTRY=.*/REGISTRY=${{ env.REGISTRY }}/' .env
+            else
+              echo "REGISTRY=${{ env.REGISTRY }}" >> .env
+            fi
+            if grep -q '^IMAGE_NAME=' .env; then
+              sed -i 's/^IMAGE_NAME=.*/IMAGE_NAME=${{ env.IMAGE_NAME }}/' .env
+            else
+              echo "IMAGE_NAME=${{ env.IMAGE_NAME }}" >> .env
+            fi
+
+            # 拉取最新代码
+            git pull origin main
+
+            # 登录到 GHCR（私有镜像需要）。建议使用具有 read:packages 权限的 Token
+            echo '${{ secrets.GHCR_TOKEN }}' | docker login ghcr.io -u '${{ secrets.GHCR_USERNAME }}' --password-stdin
+
+            # 拉取最新镜像
+            docker-compose -f docker-compose.prod.yml pull
+
+            # 停止旧容器
+            docker-compose -f docker-compose.prod.yml down
+
+            # 启动新容器
+            docker-compose -f docker-compose.prod.yml up -d
+
+            # 运行数据库迁移
+            docker-compose -f docker-compose.prod.yml exec backend npx prisma migrate deploy
+
+            # 清理旧镜像
+            docker image prune -f

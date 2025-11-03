@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  # 后端服务
+  backend:
+    image: ${REGISTRY}/${IMAGE_NAME}-backend:latest
+    container_name: easy-blog-backend
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/easy_blog?schema=public
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET}
+      - NODE_ENV=production
+      - PORT=8000
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - easy-blog-network
+    volumes:
+      - ./uploads:/app/uploads
+
+  # 前端服务
+  frontend:
+    image: ${REGISTRY}/${IMAGE_NAME}-frontend:latest
+    container_name: easy-blog-frontend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    networks:
+      - easy-blog-network
+
+  # 管理后台
+  admin:
+    image: ${REGISTRY}/${IMAGE_NAME}-admin:latest
+    container_name: easy-blog-admin
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    networks:
+      - easy-blog-network
+
+  # Nginx 反向代理
+  nginx:
+    image: nginx:alpine
+    container_name: easy-blog-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - backend
+      - frontend
+      - admin
+    networks:
+      - easy-blog-network
+
+  # PostgreSQL 数据库
+  postgres:
+    image: postgres:15-alpine
+    container_name: easy-blog-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=easy_blog
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    networks:
+      - easy-blog-network
+
+  # Redis 缓存
+  redis:
+    image: redis:7-alpine
+    container_name: easy-blog-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - easy-blog-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  easy-blog-network:
+    driver: bridge
