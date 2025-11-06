@@ -81,8 +81,8 @@ vim .env
 
 ```bash
 # 数据库配置
-POSTGRES_PASSWORD=your_strong_password_here
-DATABASE_URL=postgresql://postgres:your_strong_password_here@postgres:5432/easy_blog?schema=public
+POSTGRES_PASSWORD=!Aa13349817311
+DATABASE_URL=postgresql://postgres:!Aa13349817311@postgres:5432/easy_blog?schema=public
 
 # JWT 配置（必须修改）
 JWT_SECRET=your_super_secret_jwt_key_change_in_production
