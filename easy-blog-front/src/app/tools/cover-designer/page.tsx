@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { message, Upload, Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import * as htmlToImage from "html-to-image";
@@ -19,6 +20,28 @@ interface ICoverDesigner {
   imageType: CoverImageType /** 图片类型 */;
 }
 
+const EMPTY_FORM: ICoverDesigner = {
+  title: "",
+  subTitle: "",
+  image1: "",
+  image2: "",
+  template: "模板1",
+  name: "cover",
+  imageType: "png",
+};
+
+const EXAMPLE_FORM: ICoverDesigner = {
+  title: "手写前端面试题",
+  subTitle: "每天一篇短文章，每天进步一点点",
+  image1:
+    "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwx3.sinaimg.cn%2Fmw690%2F5f808b33ly1gtiphdw1qmj210z117jx2.jpg&refer=http%3A%2F%2Fwx3.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1635558644&t=7e78332ae1fd1fabdc7c055225e74f27",
+  image2:
+    "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201604%2F09%2F20160409012110_XEfFy.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1635563063&t=a59acdafb19a06f13d9ecb5607255858",
+  template: "模板1",
+  name: "cover",
+  imageType: "png",
+};
+
 export default function CoverDesignerPage() {
   // 封面图片类型
   const imageTypes: CoverImageType[] = ["png", "jpg", "svg"];
@@ -27,15 +50,9 @@ export default function CoverDesignerPage() {
   const [isDownload, setIsDownload] = useState(false);
 
   // 表单数据
-  const [form, setForm] = useState<ICoverDesigner>({
-    title: "" /** 封面标题 */,
-    subTitle: "" /** 封面小标题 */,
-    image1: "" /** 封面配图1 */,
-    image2: "" /** 封面配图2 */,
-    template: "模板1" /** 封面模板 */,
-    name: "cover" /** 封面图片名称 */,
-    imageType: "png" /** 图片类型 */,
-  });
+  const [form, setForm] = useState<ICoverDesigner>(() => ({
+    ...EXAMPLE_FORM,
+  }));
 
   // 更新是否下载
   const handleIsDownloadUpdate = (download: boolean) => {
@@ -104,42 +121,13 @@ export default function CoverDesignerPage() {
   });
 
   // 加载示例数据
-  const loadExampleData = () => {
-    const exampleData: ICoverDesigner = {
-      title: "手写前端面试题" /** 封面标题 */,
-      subTitle: "每天一篇短文章，每天进步一点点" /** 封面小标题 */,
-      image1:
-        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwx3.sinaimg.cn%2Fmw690%2F5f808b33ly1gtiphdw1qmj210z117jx2.jpg&refer=http%3A%2F%2Fwx3.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1635558644&t=7e78332ae1fd1fabdc7c055225e74f27" /** 封面配图1 */,
-      image2:
-        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201604%2F09%2F20160409012110_XEfFy.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1635563063&t=a59acdafb19a06f13d9ecb5607255858" /** 封面配图2 */,
-      template: "模板1" /** 封面模板 */,
-      name: "cover" /** 封面图片名称 */,
-      imageType: "png" /** 图片类型 */,
-    };
-    setForm(exampleData);
-  };
-
   // 执行下载命令
   const downCoverImage = () => setIsDownload(true);
 
   // 重置配图参数
   const resetForm = () => {
-    const initData: ICoverDesigner = {
-      title: "" /** 封面标题 */,
-      subTitle: "" /** 封面小标题 */,
-      image1: "" /** 封面配图1 */,
-      image2: "" /** 封面配图2 */,
-      template: "模板1" /** 封面模板 */,
-      name: "cover" /** 封面图片名称 */,
-      imageType: "png" /** 图片类型 */,
-    };
-    setForm(initData);
+    setForm(() => ({ ...EMPTY_FORM }));
   };
-
-  // 组件挂载时加载示例数据
-  useEffect(() => {
-    loadExampleData();
-  }, []);
 
   return (
     <div className="w-full bg-gray-100">
@@ -326,44 +314,56 @@ function CoverTemplate1({
   isDownload,
   onUpdateIsDownload,
 }: CoverTemplate1Props) {
-  // 下载封面图片
-  const downloadImage = () => {
-    const node = document.getElementById("cover-designer");
-    if (node) {
-      const imageType = cover.imageType;
-      let toImagePromise: Promise<string>;
-
-      if (imageType === "png") {
-        toImagePromise = htmlToImage.toPng(node, { quality: 0.95 });
-      } else if (imageType === "jpg") {
-        toImagePromise = htmlToImage.toJpeg(node, { quality: 0.95 });
-      } else {
-        toImagePromise = htmlToImage.toSvg(node, { quality: 0.95 });
-      }
-
-      toImagePromise
-        .then(function (dataUrl) {
-          const link = document.createElement("a");
-          link.download = `${cover.name}.${cover.imageType}`;
-          link.href = dataUrl;
-          link.click();
-          message.success("生成封面图片成功");
-          onUpdateIsDownload(false);
-        })
-        .catch(function (error) {
-          console.error("生成图片失败:", error);
-          message.error("生成图片失败");
-          onUpdateIsDownload(false);
-        });
-    }
-  };
-
-  // 监听下载状态
   useEffect(() => {
-    if (isDownload) {
-      downloadImage();
+    if (!isDownload) {
+      return;
     }
-  }, [isDownload]);
+
+    let cancelled = false;
+    const node = document.getElementById("cover-designer");
+
+    if (!node) {
+      message.error("生成图片失败");
+      onUpdateIsDownload(false);
+      return;
+    }
+
+    const imageType = cover.imageType;
+    const toImagePromise =
+      imageType === "png"
+        ? htmlToImage.toPng(node, { quality: 0.95 })
+        : imageType === "jpg"
+          ? htmlToImage.toJpeg(node, { quality: 0.95 })
+          : htmlToImage.toSvg(node, { quality: 0.95 });
+
+    toImagePromise
+      .then((dataUrl) => {
+        if (cancelled) {
+          return;
+        }
+        const link = document.createElement("a");
+        link.download = `${cover.name}.${cover.imageType}`;
+        link.href = dataUrl;
+        link.click();
+        message.success("生成封面图片成功");
+      })
+      .catch((error) => {
+        if (cancelled) {
+          return;
+        }
+        console.error("生成图片失败:", error);
+        message.error("生成图片失败");
+      })
+      .finally(() => {
+        if (!cancelled) {
+          onUpdateIsDownload(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [cover, isDownload, onUpdateIsDownload]);
 
   return (
     <div
@@ -396,16 +396,26 @@ function CoverTemplate1({
 
       {/* Images */}
       <div className="absolute top-10 right-8">
-        <img
-          src={cover.image1}
-          alt="封面配图1"
-          className="object-cover w-64 shadow-2xl h-36 rounded-2xl rotate-3"
-        />
-        <img
-          src={cover.image2}
-          alt="封面配图2"
-          className="object-cover w-64 translate-x-16 -translate-y-2 shadow-2xl h-36 rounded-2xl -rotate-3"
-        />
+        {cover.image1 ? (
+          <Image
+            src={cover.image1}
+            alt="封面配图1"
+            width={256}
+            height={144}
+            unoptimized
+            className="object-cover w-64 shadow-2xl h-36 rounded-2xl rotate-3"
+          />
+        ) : null}
+        {cover.image2 ? (
+          <Image
+            src={cover.image2}
+            alt="封面配图2"
+            width={256}
+            height={144}
+            unoptimized
+            className="object-cover w-64 translate-x-16 -translate-y-2 shadow-2xl h-36 rounded-2xl -rotate-3"
+          />
+        ) : null}
       </div>
 
       {/* Play button */}

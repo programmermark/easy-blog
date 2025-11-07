@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import Author from "@/components/author";
 
 // 工具数据
@@ -30,11 +31,14 @@ export default function ToolsPage() {
                 className="flex px-4 py-3 mb-5 bg-white border border-gray-200 rounded shadow"
               >
                 {/* 工具封面图片 */}
-                <div className="mr-4 bg-gray-900 border border-gray-100 rounded-lg">
-                  <img
-                    className="h-full px-2 pt-4 pb-2 w-80"
+                <div className="mr-4 bg-gray-900 border border-gray-100 rounded-lg relative h-48 w-80">
+                  <Image
                     src={tool.coverUrl}
                     alt="工具预览图片"
+                    fill
+                    unoptimized
+                    sizes="20rem"
+                    className="object-contain p-4"
                   />
                 </div>
 

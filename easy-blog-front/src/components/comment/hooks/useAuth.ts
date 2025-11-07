@@ -68,7 +68,11 @@ export function useAuth(): UseAuthReturn {
   }, []);
 
   useEffect(() => {
-    checkLoginStatus();
+    const frameId = requestAnimationFrame(() => {
+      checkLoginStatus();
+    });
+
+    return () => cancelAnimationFrame(frameId);
   }, [checkLoginStatus]);
 
   return {

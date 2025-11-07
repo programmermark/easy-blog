@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { Input, Button, Avatar, Upload, message } from "antd";
 import { SendOutlined, UserOutlined } from "@ant-design/icons";
 import { env } from "@/env";
@@ -148,10 +149,14 @@ export default function CommentInput({
           showUploadList={false}
         >
           {userAvatar ? (
-            <img
+            <Image
               src={userAvatar}
               alt="用户头像"
-              className="w-10 h-10 rounded-full border border-gray-400 box-border cursor-pointer"
+              width={40}
+              height={40}
+              unoptimized
+              sizes="40px"
+              className="rounded-full border border-gray-400 box-border cursor-pointer"
             />
           ) : (
             <Avatar

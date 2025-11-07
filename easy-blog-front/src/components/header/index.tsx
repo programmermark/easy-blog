@@ -3,31 +3,30 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
+import { useMemo } from "react";
 import avatar from "@/assets/image/avatar.png";
 import classNames from "classnames";
+
+const NAV_ITEMS = [
+  { text: "首页", url: "/" },
+  { text: "作品集", url: "/production" },
+  { text: "关于我", url: "/about" },
+  { text: "简历", url: "/resume" },
+  { text: "工具", url: "/tools" },
+];
 
 export default function Header() {
   const pathname = usePathname();
 
   const LOGO_NAME = "爱编程的Mark";
-  const [navs, setNavs] = useState([
-    { text: "首页", url: "/", active: true },
-    { text: "作品集", url: "/production", active: false },
-    { text: "关于我", url: "/about", active: false },
-    { text: "简历", url: "/resume", active: false },
-    { text: "工具", url: "/tools", active: false },
-  ]);
-
-  const updateNavs = useCallback(() => {
-    setNavs((prevNavs) =>
-      prevNavs.map((nav) => ({ ...nav, active: nav.url === pathname }))
-    );
-  }, [pathname]);
-
-  useEffect(() => {
-    updateNavs();
-  }, [updateNavs]);
+  const navs = useMemo(
+    () =>
+      NAV_ITEMS.map((nav) => ({
+        ...nav,
+        active: nav.url === pathname,
+      })),
+    [pathname]
+  );
 
   return (
     <header className="sticky top-0 w-full h-[60px] bg-white shadow z-[2000]">

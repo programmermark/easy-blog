@@ -1,7 +1,7 @@
 import { requestClient } from "@/lib/request-client";
 import { ArticlesResponse, BackendArticle } from "@/components/article-card/type";
 
-export default {
+const postApi = {
   /** 获取已发布的文章列表 */
   fetchPublishedPosts: (page: number = 1, limit: number = 10) =>
     requestClient.get<ArticlesResponse>(`/posts/published?page=${page}&limit=${limit}`),
@@ -14,3 +14,5 @@ export default {
   fetchPostBySlug: (slug: string) =>
     requestClient.get<BackendArticle>(`/posts/slug/${slug}`),
 };
+
+export default postApi;

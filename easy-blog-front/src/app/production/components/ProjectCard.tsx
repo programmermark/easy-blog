@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Tag, Tooltip, message } from "antd";
+import Image from "next/image";
+import { Button, Tag, Tooltip } from "antd";
 import {
   LinkOutlined,
   GithubOutlined,
@@ -84,13 +85,16 @@ export function ProjectCard({
                 </div>
               </div>
             ) : (
-              <img
+              <Image
                 src={project.coverUrl}
                 alt={project.name}
-                className={`w-full h-full object-cover transition-opacity duration-300 ${
+                fill
+                unoptimized
+                sizes="(min-width: 768px) 20rem, 100vw"
+                className={`object-cover transition-opacity duration-300 ${
                   imageLoaded ? "opacity-100" : "opacity-0"
                 }`}
-                onLoad={handleImageLoad}
+                onLoadingComplete={handleImageLoad}
                 onError={handleImageError}
               />
             )}

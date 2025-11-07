@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Avatar, Button } from "antd";
+import Image from "next/image";
 import { UserOutlined, LikeOutlined, MessageOutlined } from "@ant-design/icons";
 import { Comment } from "@/api/comments";
 import CommentInput from "./CommentInput";
@@ -35,6 +35,14 @@ export default function CommentItem({
   const [replyValue, setReplyValue] = useState("");
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+
+  const avatarSrc =
+    comment.author?.avatarUrl ||
+    comment.visitor?.avatarUrl ||
+    "/default-avatar.png";
+  const avatarAlt =
+    comment.author?.name || comment.visitor?.nickname || "用户";
+  const avatarSize = isChildren ? 24 : 40;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -87,16 +95,16 @@ export default function CommentItem({
   return (
     <div className={`flex ${isChildren ? "py-0 pt-6" : "py-4"}`}>
       {/* 头像 */}
-      <img
+      <Image
         className={`rounded-full border border-gray-400 ${
           isChildren ? "w-6 h-6" : "w-10 h-10"
         }`}
-        src={
-          comment.author?.avatarUrl ||
-          comment.visitor?.avatarUrl ||
-          "/default-avatar.png"
-        }
-        alt={comment.author?.name || comment.visitor?.nickname || "用户"}
+        src={avatarSrc}
+        alt={avatarAlt}
+        width={avatarSize}
+        height={avatarSize}
+        unoptimized
+        sizes={`${avatarSize}px`}
       />
 
       <div className="flex-1 ml-4">

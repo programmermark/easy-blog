@@ -15,8 +15,10 @@ const nextConfig = {
         pathname: "/uploads/**",
       },
     ],
-    domains: ["localhost"],
     unoptimized: false,
+  },
+  turbopack: {
+    root: __dirname,
   },
 };
 

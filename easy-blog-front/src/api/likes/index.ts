@@ -12,7 +12,7 @@ export interface LikeCountResponse {
   count: number;
 }
 
-export default {
+const likeApi = {
   /** 切换点赞状态 */
   toggleLike: (data: LikePostDto) =>
     requestClient.post<LikeResponse>("/likes/toggle", data),
@@ -33,3 +33,5 @@ export default {
   isLikedByUser: (postId: string) =>
     requestClient.get<LikeResponse>(`/likes/post/${postId}/status`),
 };
+
+export default likeApi;

@@ -30,7 +30,7 @@ export interface CreateCommentDto {
   visitorId?: string;
 }
 
-export default {
+const commentApi = {
   /** 获取文章评论 */
   getCommentsByPostId: (postId: string) =>
     requestClient.get<Comment[]>(`/comments/post/${postId}`),
@@ -43,3 +43,5 @@ export default {
   deleteComment: (commentId: string) =>
     requestClient.del(`/comments/${commentId}`),
 };
+
+export default commentApi;
