@@ -1,6 +1,16 @@
 version: '3.8'
 
 services:
+  # 管理后台
+  admin:
+    image: ${REGISTRY}/${IMAGE_NAME}-admin:latest
+    container_name: easy-blog-admin
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    networks:
+      - easy-blog-network
   # 后端服务
   backend:
     image: ${REGISTRY}/${IMAGE_NAME}-backend:latest
@@ -30,18 +40,6 @@ services:
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
     networks:
       - easy-blog-network
-
-  # 管理后台
-  admin:
-    image: ${REGISTRY}/${IMAGE_NAME}-admin:latest
-    container_name: easy-blog-admin
-    restart: unless-stopped
-    environment:
-      - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-    networks:
-      - easy-blog-network
-
   # Nginx 反向代理
   nginx:
     image: nginx:alpine
