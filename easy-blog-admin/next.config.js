@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 /** @type {import('next').NextConfig} */
+const path = require("path");
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -14,8 +16,8 @@ const nextConfig = {
   turbopack: {
     root: __dirname,
     resolveAlias: {
-      "@": "./src",
-      "@/": "./src/",
+      "@": path.resolve(__dirname, "src"),
+      "@/": `${path.resolve(__dirname, "src")}/`,
     },
   },
 };
