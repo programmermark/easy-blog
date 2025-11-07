@@ -280,16 +280,18 @@ export default function AdminProfilePage() {
                 }}
               >
                 {backgroundImage ? (
-                  <img
+                  <Image
                     src={
                       backgroundImage.startsWith("http")
                         ? backgroundImage
                         : `http://localhost:8000${backgroundImage}`
                     }
                     alt="background"
+                    fill
                     style={{
                       objectFit: "cover",
                     }}
+                    sizes="100vw"
                   />
                 ) : (
                   <Image

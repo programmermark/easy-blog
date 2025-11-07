@@ -7,7 +7,6 @@ import Image from "@tiptap/extension-image";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { createLowlight } from "lowlight";
 import { Button, Space, Divider, Spin } from "antd";
-import { useEffect, useState } from "react";
 import {
   BoldOutlined,
   ItalicOutlined,
@@ -33,12 +32,7 @@ export default function PostEditor({
   onChange,
   placeholder,
 }: PostEditorProps) {
-  const [isMounted, setIsMounted] = useState(false);
   const lowlight = createLowlight();
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const editor = useEditor({
     extensions: [
@@ -72,7 +66,7 @@ export default function PostEditor({
   });
 
   // 在客户端挂载之前显示加载状态
-  if (!isMounted || !editor) {
+  if (!editor) {
     return (
       <div className="border border-gray-300 rounded-md min-h-[300px] flex items-center justify-center">
         <Spin size="large" />
