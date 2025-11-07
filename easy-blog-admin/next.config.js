@@ -13,6 +13,10 @@ const nextConfig = {
   },
   turbopack: {
     root: __dirname,
+    resolveAlias: {
+      "@": "./src",
+      "@/": "./src/",
+    },
   },
 };
 
