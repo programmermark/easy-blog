@@ -26,9 +26,9 @@ import {
   RiseOutlined,
   FallOutlined,
 } from "@ant-design/icons";
-import { useAuth } from "../hooks/useAuth";
-import { useAuthCheck } from "../hooks/useAuthCheck";
-import HomeLayout from "../components/HomeLayout";
+import { useAuth } from "@/hooks/useAuth";
+import { useAuthCheck } from "@/hooks/useAuthCheck";
+import HomeLayout from "@/components/HomeLayout";
 
 const { Title, Paragraph, Text } = Typography;
 

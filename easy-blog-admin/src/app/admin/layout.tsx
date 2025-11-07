@@ -23,8 +23,8 @@ import {
   DashboardOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { useAuth } from "../../hooks/useAuth";
-import AuthGuard from "../../components/AuthGuard";
+import { useAuth } from "@/hooks/useAuth";
+import AuthGuard from "@/components/AuthGuard";
 import { useState } from "react";
 
 const { Header, Sider, Content } = Layout;

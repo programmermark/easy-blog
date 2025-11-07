@@ -8,7 +8,7 @@ import {
   FileTextOutlined,
 } from "@ant-design/icons";
 import PostEditorWrapper from "./PostEditorWrapper";
-import { Post, Category, Tag } from "../types/index";
+import { Post, Category, Tag } from "@/types";
 
 // 表单字段类型定义
 interface PostFormValues {

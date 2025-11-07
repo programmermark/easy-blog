@@ -22,10 +22,10 @@ import {
   SafetyOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
-import { useAuth } from "../../hooks/useAuth";
-import { RegisterDto } from "../../types/index";
+import { useAuth } from "@/hooks/useAuth";
+import { RegisterDto } from "@/types";
 import Link from "next/link";
-import api from "../../lib/api";
+import api from "@/lib/api";
 
 const { Title, Text } = Typography;
 

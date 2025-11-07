@@ -19,9 +19,9 @@ import {
 } from "@ant-design/icons";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { Category, Post, Tag as TagType } from "../../../types/index";
-import api from "../../../lib/api";
-import PostForm from "../../../components/PostForm";
+import { Category, Post, Tag as TagType } from "@/types";
+import api from "@/lib/api";
+import PostForm from "@/components/PostForm";
 
 export default function PostsPage() {
   const router = useRouter();

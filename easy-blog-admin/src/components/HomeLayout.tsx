@@ -23,7 +23,7 @@ import {
   LoginOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 import Link from "next/link";
 
