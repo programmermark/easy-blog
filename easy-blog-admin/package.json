@@ -40,7 +40,6 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
     "tailwindcss": "^4",
-    "tsconfig-paths-webpack-plugin": "^4.2.0",
     "typescript": "^5"
   }
 }
