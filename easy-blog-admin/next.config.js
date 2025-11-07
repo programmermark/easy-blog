@@ -4,9 +4,11 @@ const path = require("path");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack: (config) => {
+    const srcPath = path.resolve(__dirname, "src");
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
-      "@": path.resolve(__dirname, "src"),
+      "@": srcPath,
+      "@/": `${srcPath}/`,
     };
     return config;
   },
