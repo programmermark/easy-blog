@@ -3,6 +3,9 @@ version: '3.8'
 services:
   # 管理后台
   admin:
+    build:
+      context: ./easy-blog-admin
+      dockerfile: Dockerfile
     image: ${REGISTRY}/${IMAGE_NAME}-admin:latest
     container_name: easy-blog-admin
     restart: unless-stopped
@@ -13,6 +16,9 @@ services:
       - easy-blog-network
   # 后端服务
   backend:
+    build:
+      context: ./easy-blog-service
+      dockerfile: Dockerfile
     image: ${REGISTRY}/${IMAGE_NAME}-backend:latest
     container_name: easy-blog-backend
     restart: unless-stopped
@@ -32,12 +38,17 @@ services:
 
   # 前端服务
   frontend:
+    build:
+      context: ./easy-blog-front
+      dockerfile: Dockerfile
     image: ${REGISTRY}/${IMAGE_NAME}-frontend:latest
     container_name: easy-blog-frontend
     restart: unless-stopped
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    depends_on:
+      - admin
     networks:
       - easy-blog-network
   # Nginx 反向代理

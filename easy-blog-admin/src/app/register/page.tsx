@@ -25,7 +25,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { RegisterDto } from "@/types";
 import Link from "next/link";
-import api from "@/lib/api";
+import api from "@/lib/request-client";
 
 const { Title, Text } = Typography;
 

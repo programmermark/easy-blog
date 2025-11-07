@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { User, LoginDto, LoginResponse } from "@/types";
-import api from "@/lib/api";
+import api from "@/lib/request-client";
 import { tokenCookies, clearAuthCookies } from "@/lib/cookies";
 
 interface AuthState {

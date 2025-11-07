@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import api from "@/lib/api";
+import api from "@/lib/request-client";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 

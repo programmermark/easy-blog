@@ -20,7 +20,7 @@ import {
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Category, Post, Tag as TagType } from "@/types";
-import api from "@/lib/api";
+import api from "@/lib/request-client";
 import PostForm from "@/components/PostForm";
 
 export default function PostsPage() {

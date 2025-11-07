@@ -21,7 +21,7 @@ import {
 } from "@ant-design/icons";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Tag as TagType } from "@/types";
-import api from "@/lib/api";
+import api from "@/lib/request-client";
 
 export default function TagsPage() {
   const [editingTag, setEditingTag] = useState<TagType | null>(null);

@@ -21,7 +21,7 @@ import {
 } from "@ant-design/icons";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiResponse, Category } from "@/types";
-import api from "@/lib/api";
+import api from "@/lib/request-client";
 
 export default function CategoriesPage() {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
