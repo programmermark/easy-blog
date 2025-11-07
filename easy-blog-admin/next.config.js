@@ -3,10 +3,13 @@ const path = require("path");
 
 const nextConfig = {
   webpack: (config) => {
+    const srcPath = path.resolve(__dirname, "src");
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
-      "@": path.resolve(__dirname, "src"),
+      "@": srcPath,
+      "@/": `${srcPath}/`,
     };
+    config.resolve.modules = [srcPath, ...(config.resolve.modules || [])];
     return config;
   },
 };
