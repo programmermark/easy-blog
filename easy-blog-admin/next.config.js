@@ -13,6 +13,9 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    disableFontDownloads: true,
+  },
   turbopack: {
     root: __dirname,
     resolveAlias: {
