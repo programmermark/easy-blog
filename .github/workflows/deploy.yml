@@ -20,7 +20,7 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_PASSWORD: !Aa13349817311
+          POSTGRES_PASSWORD: "!Aa13349817311"
           POSTGRES_DB: easy_blog_test
         options: >-
           --health-cmd pg_isready
