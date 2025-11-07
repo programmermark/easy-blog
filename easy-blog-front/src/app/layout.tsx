@@ -1,15 +1,8 @@
 import type { Metadata } from "next";
-import { Noto_Sans_SC } from "next/font/google";
+import "../styles/fonts.css";
 import "./globals.css";
 import Providers from "./providers";
 import Header from "@/components/header";
-
-const notoSansSC = Noto_Sans_SC({
-  weight: ["400", "700"],
-  variable: "--font-cn",
-  display: "swap",
-  preload: false, // 中文字体很大，建议不要预加载
-});
 
 export const metadata: Metadata = {
   title: "爱编程的Mark - 持续分享的前端工程师",
@@ -23,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${notoSansSC.variable} antialiased h-full`}>
+      <body className="font-noto antialiased h-full">
         <Providers>
           <div className="w-full h-full flex flex-col">
             <Header />
