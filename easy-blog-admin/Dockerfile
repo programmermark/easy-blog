@@ -3,6 +3,8 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+ENV NEXT_DISABLE_FONT_DOWNLOADS=1
+
 # 安装 pnpm
 RUN npm install -g pnpm
 
@@ -22,6 +24,8 @@ RUN pnpm run build
 FROM node:20-alpine AS production
 
 WORKDIR /app
+
+ENV NEXT_DISABLE_FONT_DOWNLOADS=1
 
 # 安装 pnpm
 RUN npm install -g pnpm

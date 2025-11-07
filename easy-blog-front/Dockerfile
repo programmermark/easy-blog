@@ -3,11 +3,13 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# 复制 package 文件
-COPY package.json pnpm-lock.yaml ./
+ENV NEXT_DISABLE_FONT_DOWNLOADS=1
 
 # 安装 pnpm
 RUN npm install -g pnpm
+
+# 复制 package 文件
+COPY package.json pnpm-lock.yaml ./
 
 # 安装依赖
 RUN pnpm install --frozen-lockfile
@@ -22,6 +24,8 @@ RUN pnpm run build
 FROM node:20-alpine AS production
 
 WORKDIR /app
+
+ENV NEXT_DISABLE_FONT_DOWNLOADS=1
 
 # 安装 pnpm
 RUN npm install -g pnpm
