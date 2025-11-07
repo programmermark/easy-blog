@@ -105,9 +105,8 @@ docs/build/
 *.backup
 *.old
 
-# Lock files (keep package-lock.json)
+# Lock files (keep package-lock.json and pnpm-lock.yaml)
 yarn.lock
-pnpm-lock.yaml
 
 # IDE specific files
 *.swp
