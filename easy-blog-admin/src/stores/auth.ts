@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { User, LoginDto, LoginResponse } from "@/types";
-import api from "@/lib/request-client";
+import requestClient from "@/lib/request-client";
 import { tokenCookies, clearAuthCookies } from "@/lib/cookies";
 
 interface AuthState {
@@ -32,7 +32,7 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true, error: null });
 
         try {
-          const response = await api.post<LoginResponse>(
+          const response = await requestClient.post<LoginResponse>(
             "/auth/login",
             loginData
           );
@@ -67,7 +67,7 @@ export const useAuthStore = create<AuthState>()(
       checkAuthStatus: async () => {
         set({ isLoading: true });
         try {
-          const response = await api.get("/auth/me");
+          const response = await requestClient.get("/auth/me");
           set({ user: response.data, isAuthenticated: true, isLoading: false });
         } catch {
           set({ user: null, isAuthenticated: false, isLoading: false });

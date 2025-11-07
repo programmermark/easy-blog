@@ -19,7 +19,7 @@ import {
 } from "@ant-design/icons";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Post, Category, Tag } from "@/types";
-import api from "@/lib/request-client";
+import requestClient from "@/lib/request-client";
 import PostForm from "@/components/PostForm";
 
 const { Title } = Typography;
@@ -35,7 +35,7 @@ export default function EditPostPage() {
   const { data: post, isLoading: postLoading } = useQuery({
     queryKey: ["post", postId],
     queryFn: async () => {
-      const response = await api.get(`/posts/${postId}`);
+      const response = await requestClient.get(`/posts/${postId}`);
       return response.data;
     },
     enabled: !!postId,
@@ -45,7 +45,7 @@ export default function EditPostPage() {
   const { data: categories = [], isLoading: categoriesLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const response = await api.get("/categories");
+      const response = await requestClient.get("/categories");
       return response.data;
     },
   });
@@ -53,7 +53,7 @@ export default function EditPostPage() {
   const { data: tags = [], isLoading: tagsLoading } = useQuery({
     queryKey: ["tags"],
     queryFn: async () => {
-      const response = await api.get("/tags");
+      const response = await requestClient.get("/tags");
       return response.data;
     },
   });
@@ -61,7 +61,7 @@ export default function EditPostPage() {
   // 更新文章
   const updatePostMutation = useMutation({
     mutationFn: async (values: Partial<Post>) => {
-      const response = await api.put(`/posts/${postId}`, values);
+      const response = await requestClient.put(`/posts/${postId}`, values);
       return response.data;
     },
     onSuccess: () => {

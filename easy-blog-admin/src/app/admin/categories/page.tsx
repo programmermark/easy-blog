@@ -21,7 +21,7 @@ import {
 } from "@ant-design/icons";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiResponse, Category } from "@/types";
-import api from "@/lib/request-client";
+import requestClient from "@/lib/request-client";
 
 export default function CategoriesPage() {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
@@ -38,7 +38,9 @@ export default function CategoriesPage() {
       const params = new URLSearchParams();
       if (searchText) params.append("search", searchText);
 
-      const response = await api.get(`/categories?${params.toString()}`);
+      const response = await requestClient.get(
+        `/categories?${params.toString()}`
+      );
       console.log(response.data);
       return response.data;
     },
@@ -47,7 +49,7 @@ export default function CategoriesPage() {
   // 删除分类
   const deleteCategoryMutation = useMutation({
     mutationFn: async (id: string) => {
-      await api.delete(`/categories/${id}`);
+      await requestClient.delete(`/categories/${id}`);
     },
     onSuccess: () => {
       message.success("分类删除成功");
@@ -62,9 +64,12 @@ export default function CategoriesPage() {
   const saveCategoryMutation = useMutation({
     mutationFn: async (categoryData: Partial<Category>) => {
       if (editingCategory) {
-        await api.patch(`/categories/${editingCategory.id}`, categoryData);
+        await requestClient.patch(
+          `/categories/${editingCategory.id}`,
+          categoryData
+        );
       } else {
-        await api.post("/categories", categoryData);
+        await requestClient.post("/categories", categoryData);
       }
     },
     onSuccess: () => {

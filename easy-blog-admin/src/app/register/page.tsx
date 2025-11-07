@@ -25,7 +25,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { RegisterDto } from "@/types";
 import Link from "next/link";
-import api from "@/lib/request-client";
+import requestClient from "@/lib/request-client";
 
 const { Title, Text } = Typography;
 
@@ -46,7 +46,7 @@ export default function RegisterPage() {
       // 移除 confirmPassword 字段，只传递必要的注册信息
       const { confirmPassword, ...registerData } = values;
 
-      const response = await api.post("/auth/register", registerData);
+      const response = await requestClient.post("/auth/register", registerData);
       const data = response.data;
 
       // 注册成功后自动登录

@@ -11,7 +11,7 @@ import {
 } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Post, Category, Tag } from "@/types";
-import api from "@/lib/request-client";
+import requestClient from "@/lib/request-client";
 import PostForm from "@/components/PostForm";
 
 const { Title } = Typography;
@@ -24,7 +24,7 @@ export default function CreatePostPage() {
   const { data: categories = [] } = useQuery<Category[]>({
     queryKey: ["categories"],
     queryFn: async () => {
-      const response = await api.get("/categories");
+      const response = await requestClient.get("/categories");
       return response.data;
     },
   });
@@ -32,7 +32,7 @@ export default function CreatePostPage() {
   const { data: tags = [] } = useQuery<Tag[]>({
     queryKey: ["tags"],
     queryFn: async () => {
-      const response = await api.get("/tags");
+      const response = await requestClient.get("/tags");
       return response.data;
     },
   });
@@ -40,7 +40,7 @@ export default function CreatePostPage() {
   const handleSubmit = async (values: Partial<Post>) => {
     setIsSubmitting(true);
     try {
-      await api.post("/posts", values);
+      await requestClient.post("/posts", values);
       message.success("文章创建成功");
       router.push("/admin/posts");
     } catch (error: any) {
@@ -53,7 +53,7 @@ export default function CreatePostPage() {
   const handleSaveDraft = async (values: Partial<Post>) => {
     setIsSubmitting(true);
     try {
-      await api.post("/posts", { ...values, status: "DRAFT" });
+      await requestClient.post("/posts", { ...values, status: "DRAFT" });
       message.success("草稿保存成功");
       router.push("/admin/posts");
     } catch (error: any) {

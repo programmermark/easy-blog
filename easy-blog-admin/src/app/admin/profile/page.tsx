@@ -20,7 +20,7 @@ import {
   ReloadOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
-import api from "@/lib/request-client";
+import requestClient from "@/lib/request-client";
 import profileBg from "@/assets/image/profile-bg.jpg";
 
 const { Title, Text } = Typography;
@@ -47,7 +47,7 @@ export default function AdminProfilePage() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await api.get("/profile");
+        const { data } = await requestClient.get("/profile");
         form.setFieldsValue(data);
         setAvatarBase64(data.avatarBase64);
         setBackgroundImage(data.backgroundImage);
@@ -78,7 +78,7 @@ export default function AdminProfilePage() {
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await api.post("/upload", formData, {
+      const response = await requestClient.post("/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -97,7 +97,7 @@ export default function AdminProfilePage() {
     setSubmitting(true);
     try {
       const payload: ProfileData = { ...values, avatarBase64, backgroundImage };
-      await api.put("/profile", payload);
+      await requestClient.put("/profile", payload);
       localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(payload));
       message.success("保存成功");
     } catch (e) {
@@ -312,12 +312,15 @@ export default function AdminProfilePage() {
                   try {
                     const formData = new FormData();
                     formData.append("file", file);
-
-                    const response = await api.post("/upload", formData, {
-                      headers: {
-                        "Content-Type": "multipart/form-data",
-                      },
-                    });
+                    const response = await requestClient.post(
+                      "/upload",
+                      formData,
+                      {
+                        headers: {
+                          "Content-Type": "multipart/form-data",
+                        },
+                      }
+                    );
 
                     const { url } = response.data;
                     console.log(url);

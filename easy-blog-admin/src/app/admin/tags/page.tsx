@@ -21,7 +21,7 @@ import {
 } from "@ant-design/icons";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Tag as TagType } from "@/types";
-import api from "@/lib/request-client";
+import requestClient from "@/lib/request-client";
 
 export default function TagsPage() {
   const [editingTag, setEditingTag] = useState<TagType | null>(null);
@@ -38,7 +38,7 @@ export default function TagsPage() {
       const params = new URLSearchParams();
       if (searchText) params.append("search", searchText);
 
-      const response = await api.get(`/tags?${params.toString()}`);
+      const response = await requestClient.get(`/tags?${params.toString()}`);
       return response.data;
     },
   });
@@ -46,7 +46,7 @@ export default function TagsPage() {
   // 删除标签
   const deleteTagMutation = useMutation({
     mutationFn: async (id: string) => {
-      await api.delete(`/tags/${id}`);
+      await requestClient.delete(`/tags/${id}`);
     },
     onSuccess: () => {
       message.success("标签删除成功");
@@ -61,9 +61,9 @@ export default function TagsPage() {
   const saveTagMutation = useMutation({
     mutationFn: async (tagData: Partial<TagType>) => {
       if (editingTag) {
-        await api.put(`/tags/${editingTag.id}`, tagData);
+        await requestClient.put(`/tags/${editingTag.id}`, tagData);
       } else {
-        await api.post("/tags", tagData);
+        await requestClient.post("/tags", tagData);
       }
     },
     onSuccess: () => {

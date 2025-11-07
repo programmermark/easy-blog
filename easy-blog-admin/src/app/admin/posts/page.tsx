@@ -20,7 +20,7 @@ import {
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Category, Post, Tag as TagType } from "@/types";
-import api from "@/lib/request-client";
+import requestClient from "@/lib/request-client";
 import PostForm from "@/components/PostForm";
 
 export default function PostsPage() {
@@ -40,7 +40,7 @@ export default function PostsPage() {
       if (searchText) params.append("search", searchText);
       if (statusFilter) params.append("status", statusFilter);
 
-      const response = await api.get(`/posts?${params.toString()}`);
+      const response = await requestClient.get(`/posts?${params.toString()}`);
       console.log(response.data);
       return response.data;
     },
@@ -50,7 +50,7 @@ export default function PostsPage() {
   const { data: categories } = useQuery<Category[]>({
     queryKey: ["categories"],
     queryFn: async () => {
-      const response = await api.get("/categories");
+      const response = await requestClient.get("/categories");
       return response.data;
     },
   });
@@ -58,7 +58,7 @@ export default function PostsPage() {
   const { data: tags } = useQuery<TagType[]>({
     queryKey: ["tags"],
     queryFn: async () => {
-      const response = await api.get("/tags");
+      const response = await requestClient.get("/tags");
       return response.data;
     },
   });
@@ -66,7 +66,7 @@ export default function PostsPage() {
   // 删除文章
   const deletePostMutation = useMutation({
     mutationFn: async (id: string) => {
-      await api.delete(`/posts/${id}`);
+      await requestClient.delete(`/posts/${id}`);
     },
     onSuccess: () => {
       message.success("文章删除成功");
@@ -81,9 +81,9 @@ export default function PostsPage() {
   const savePostMutation = useMutation({
     mutationFn: async (postData: Partial<Post>) => {
       if (editingPost) {
-        await api.put(`/posts/${editingPost.id}`, postData);
+        await requestClient.put(`/posts/${editingPost.id}`, postData);
       } else {
-        await api.post("/posts", postData);
+        await requestClient.post("/posts", postData);
       }
     },
     onSuccess: () => {
