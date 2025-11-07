@@ -36,10 +36,14 @@ COPY pnpm-lock.yaml ./
 # 只安装生产依赖
 RUN pnpm install --prod --frozen-lockfile
 
+# 复制 Prisma schema 和 migrations
+COPY --from=builder /app/prisma ./prisma
+
+# 生成 Prisma 客户端（生成到 node_modules/.prisma/client）
+RUN npx prisma generate
+
 # 复制构建后的应用
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/generated ./generated
-COPY --from=builder /app/prisma ./prisma
 
 # 创建非 root 用户
 RUN addgroup -g 1001 -S nodejs
