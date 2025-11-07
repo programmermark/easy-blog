@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "../stores/auth";
 
 /**
  * 专门用于认证检查的 hook

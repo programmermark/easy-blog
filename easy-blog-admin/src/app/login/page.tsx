@@ -19,8 +19,8 @@ import {
   BookOutlined,
   SafetyOutlined,
 } from "@ant-design/icons";
-import { useAuth } from "@/hooks/useAuth";
-import { LoginDto } from "@/types";
+import { useAuth } from "../../hooks/useAuth";
+import { LoginDto } from "../../types/index";
 import Link from "next/link";
 
 const { Text, Title } = Typography;

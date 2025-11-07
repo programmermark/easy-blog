@@ -20,8 +20,8 @@ import {
   ReloadOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
-import api from "@/lib/api";
-import profileBg from "@/assets/image/profile-bg.jpg";
+import api from "../../../lib/api";
+import profileBg from "../../../assets/image/profile-bg.jpg";
 
 const { Title, Text } = Typography;
 

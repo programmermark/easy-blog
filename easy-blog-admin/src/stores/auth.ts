@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { User, LoginDto, LoginResponse } from "@/types";
-import api from "@/lib/api";
-import { tokenCookies, clearAuthCookies } from "@/lib/cookies";
+import { User, LoginDto, LoginResponse } from "../types/index";
+import api from "../lib/api";
+import { tokenCookies, clearAuthCookies } from "../lib/cookies";
 
 interface AuthState {
   user: User | null;

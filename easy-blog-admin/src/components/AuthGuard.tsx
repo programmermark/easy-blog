@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Spin } from "antd";
-import { useAuth } from "@/hooks/useAuth";
-import { useAuthCheck } from "@/hooks/useAuthCheck";
+import { useAuth } from "../hooks/useAuth";
+import { useAuthCheck } from "../hooks/useAuthCheck";
 
 interface AuthGuardProps {
   children: React.ReactNode;

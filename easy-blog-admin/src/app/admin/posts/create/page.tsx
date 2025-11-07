@@ -10,9 +10,9 @@ import {
   FileTextOutlined,
 } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Post, Category, Tag } from "@/types";
-import api from "@/lib/api";
-import PostForm from "@/components/PostForm";
+import { Post, Category, Tag } from "../../../../types/index";
+import api from "../../../../lib/api";
+import PostForm from "../../../../components/PostForm";
 
 const { Title } = Typography;
 
