@@ -3,6 +3,11 @@
 const path = require("path");
 
 const nextConfig = {
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
   images: {
     remotePatterns: [
       {
@@ -12,13 +17,6 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
-  },
-  turbopack: {
-    root: __dirname,
-    resolveAlias: {
-      "@": "./src",
-      "@/": "./src/",
-    },
   },
 };
 
