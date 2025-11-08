@@ -1,36 +1,181 @@
-build-and-push:
-  needs: test
-  runs-on: ubuntu-latest
-  if: github.ref == 'refs/heads/main'
+name: Deploy Easy Blog
 
-  steps:
-    - uses: actions/checkout@v4
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v3
-      with:
-        version: 9
-        run_install: false
+env:
+  REGISTRY: ${{ secrets.ACR_REGISTRY }}
+  IMAGE_NAME: ${{ secrets.ACR_IMAGE_NAME }}
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: "20.10.0"
-        cache: "pnpm"
+jobs:
+  # ✅ 测试阶段
+  test:
+    runs-on: ubuntu-latest
 
-    - name: Log in to ACR
-      uses: docker/login-action@v3
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ secrets.ACR_USERNAME }}
-        password: ${{ secrets.ACR_PASSWORD }}
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: "!Aa13349817311"
+          POSTGRES_DB: easy_blog_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
 
-    - name: Build admin locally (check alias)
-      working-directory: ./easy-blog-admin
-      run: |
-        NODE_ENV=development pnpm install --frozen-lockfile
-        echo "Next.js version:"
-        pnpm next --version
-        NODE_ENV=production pnpm run build
-      env:
-        NEXT_TELEMETRY_DISABLED: 1
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.10.0"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: |
+          cd easy-blog-service
+          pnpm install
+
+      - name: Run tests
+        run: |
+          cd easy-blog-service
+          pnpm run test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/easy_blog_test?schema=public
+          JWT_SECRET: test-secret
+          REDIS_URL: redis://localhost:6379
+
+  # ✅ 构建和推送镜像
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.10.0"
+          cache: "pnpm"
+
+      - name: Log in to ACR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      # 🔹 确保管理后台构建路径在本地测试一次（非必要，但调试 alias 很有用）
+      - name: Verify admin build locally
+        run: |
+          cd easy-blog-admin
+          NODE_ENV=development pnpm install --frozen-lockfile
+          echo "Next.js version:"
+          pnpm next --version
+          echo "Building admin (Turbopack with alias)..."
+          NODE_ENV=production pnpm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+
+      # 🔹 如果上一步成功再继续 docker 构建推送
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push admin image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./easy-blog-admin
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-admin:latest
+          cache-from: type=gha,scope=admin
+          cache-to: type=gha,scope=admin-${{ github.run_id }},mode=max
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./easy-blog-front
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:latest
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,scope=frontend-${{ github.run_id }},mode=max
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./easy-blog-service
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:latest
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,scope=backend-${{ github.run_id }},mode=max
+
+  # ✅ 部署阶段
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EASY_BLOG_HOST }}
+          username: ${{ secrets.EASY_BLOG_USERNAME }}
+          key: ${{ secrets.EASY_BLOG_SSH_KEY }}
+          script: |
+            cd /opt/easy-blog
+
+            touch .env
+            if grep -q '^REGISTRY=' .env; then
+              sed -i 's/^REGISTRY=.*/REGISTRY=${{ env.REGISTRY }}/' .env
+            else
+              echo "REGISTRY=${{ env.REGISTRY }}" >> .env
+            fi
+            if grep -q '^IMAGE_NAME=' .env; then
+              sed -i 's/^IMAGE_NAME=.*/IMAGE_NAME=${{ env.IMAGE_NAME }}/' .env
+            else
+              echo "IMAGE_NAME=${{ env.IMAGE_NAME }}" >> .env
+            fi
+
+            git pull origin main
+
+            docker login ${{ env.REGISTRY }} -u '${{ secrets.ACR_USERNAME }}' -p '${{ secrets.ACR_PASSWORD }}'
+
+            docker-compose -f docker-compose.prod.yml pull
+            docker-compose -f docker-compose.prod.yml down
+            docker-compose -f docker-compose.prod.yml up -d
+
+            docker-compose -f docker-compose.prod.yml exec backend npx prisma migrate deploy
+
+            docker image prune -f
