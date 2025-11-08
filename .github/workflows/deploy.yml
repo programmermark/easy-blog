@@ -97,7 +97,7 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      # 🔹 确保前端构建路径在本地测试一次（非必要，但调试 alias 很有用）
+      # 🔹 确保管理后台构建路径在本地测试一次（非必要，但调试 alias 很有用）
       - name: Verify admin build locally
         run: |
           cd easy-blog-admin
@@ -123,15 +123,6 @@ jobs:
           cache-from: type=gha,scope=admin
           cache-to: type=gha,scope=admin-${{ github.run_id }},mode=max
 
-      - name: Build and push backend image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./easy-blog-service
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:latest
-          cache-from: type=gha,scope=backend
-          cache-to: type=gha,scope=backend-${{ github.run_id }},mode=max
-
       - name: Build and push frontend image
         uses: docker/build-push-action@v5
         with:
@@ -140,6 +131,15 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:latest
           cache-from: type=gha,scope=frontend
           cache-to: type=gha,scope=frontend-${{ github.run_id }},mode=max
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./easy-blog-service
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:latest
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,scope=backend-${{ github.run_id }},mode=max
 
   # ✅ 部署阶段
   deploy:
