@@ -1,11 +1,16 @@
 /** @type {import('next').NextConfig} */
-/** @type {import('next').NextConfig} */
 const path = require("path");
 
 const nextConfig = {
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src"),
+  webpack: (config) => {
+    config.resolve.alias["@"] = path.resolve(__dirname, "src");
+    return config;
+  },
+  experimental: {
+    turbo: {
+      resolveAlias: {
+        "@": "./src",
+      },
     },
   },
   images: {
