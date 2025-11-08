@@ -117,7 +117,7 @@ jobs:
           echo "PNPM version: $(pnpm -v)"
 
           echo "🔍 Checking tsconfig.json alias config..."
-          cat tsconfig.json | grep '"@/*"' || (echo "❌ tsconfig.json missing '@/*' alias" && exit 1)
+          grep -F '"@/*"' tsconfig.json || (echo "❌ tsconfig.json missing '@/*' alias" && exit 1)
 
           echo "🧪 Testing module resolution for '@/lib/cookies'..."
           if [ ! -d "src/lib" ]; then
