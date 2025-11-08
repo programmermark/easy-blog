@@ -101,14 +101,13 @@ jobs:
       - name: Verify admin build locally
         run: |
           cd easy-blog-admin
-          pnpm install
+          pnpm install --frozen-lockfile --prod=false
           echo "Next.js version:"
           pnpm next --version
           echo "Building admin (Turbopack with alias)..."
-          pnpm run build
+          NODE_ENV=production pnpm run build
         env:
           NEXT_TELEMETRY_DISABLED: 1
-          NODE_ENV: production
 
       # 🔹 如果上一步成功再继续 docker 构建推送
       - name: Set up Docker Buildx

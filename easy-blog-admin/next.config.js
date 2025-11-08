@@ -4,13 +4,14 @@ const path = require("path");
 const nextConfig = {
   webpack: (config) => {
     config.resolve.alias["@"] = path.resolve(__dirname, "src");
+    config.resolve.alias["@/"] = path.resolve(__dirname, "src/");
     return config;
   },
-  experimental: {
-    turbo: {
-      resolveAlias: {
-        "@": "./src",
-      },
+  turbopack: {
+    root: __dirname,
+    resolveAlias: {
+      "@": "./src",
+      "@/": "./src/",
     },
   },
   images: {
