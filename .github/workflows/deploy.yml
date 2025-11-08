@@ -46,7 +46,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "20.10.0"
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -91,8 +91,8 @@ jobs:
           context: ./easy-blog-service
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,scope=backend-${{ github.run_id }},mode=max
 
       - name: Build and push frontend image
         uses: docker/build-push-action@v5
@@ -100,8 +100,8 @@ jobs:
           context: ./easy-blog-front
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,scope=frontend-${{ github.run_id }},mode=max
 
       - name: Build and push admin image
         uses: docker/build-push-action@v5
@@ -109,8 +109,8 @@ jobs:
           context: ./easy-blog-admin
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-admin:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=admin
+          cache-to: type=gha,scope=admin-${{ github.run_id }},mode=max
 
   # 部署到服务器
   deploy:
