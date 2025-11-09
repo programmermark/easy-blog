@@ -124,8 +124,9 @@ jobs:
             echo "⚠️ src/lib not found, skipping alias test."
           else
             echo "import x from '@/lib/cookies'" > alias-test.ts
-            pnpm exec tsc --noEmit --project tsconfig.json alias-test.ts || (echo "❌ Alias test failed! '@/lib/cookies' not resolved." && exit 1)
-            rm alias-test.ts
+            printf '%s\n' '{' '  "extends": "./tsconfig.json",' '  "include": ["alias-test.ts"]' '}' > tsconfig.alias-test.json
+            pnpm exec tsc --noEmit --project tsconfig.alias-test.json || (echo "❌ Alias test failed! '@/lib/cookies' not resolved." && exit 1)
+            rm alias-test.ts tsconfig.alias-test.json
           fi
 
           echo "🏗️ Building admin (Turbopack production build)..."
