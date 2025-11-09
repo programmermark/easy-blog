@@ -124,7 +124,7 @@ jobs:
             echo "⚠️ src/lib not found, skipping alias test."
           else
             echo "import x from '@/lib/cookies'" > alias-test.ts
-            pnpm tsc alias-test.ts --noEmit || (echo "❌ Alias test failed! '@/lib/cookies' not resolved." && exit 1)
+            pnpm exec tsc --noEmit --project tsconfig.json alias-test.ts || (echo "❌ Alias test failed! '@/lib/cookies' not resolved." && exit 1)
             rm alias-test.ts
           fi
 
