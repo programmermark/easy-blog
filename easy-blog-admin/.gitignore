@@ -178,5 +178,3 @@ yarn.lock
 # Build artifacts
 dist/
 build/
-lib/
-es/
