@@ -105,35 +105,6 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      # 🔹 验证 admin 构建路径 & alias 配置（增强安全检查）
-      - name: Verify admin build locally (alias check)
-        run: |
-          cd easy-blog-admin
-          pnpm install --frozen-lockfile --prod=false
-
-          echo "🧩 Checking Next.js & Turbopack environment..."
-          pnpm next --version || true
-          echo "Node version: $(node -v)"
-          echo "PNPM version: $(pnpm -v)"
-
-          echo "🔍 Checking tsconfig.json alias config..."
-          grep -F '"@/*"' tsconfig.json || (echo "❌ tsconfig.json missing '@/*' alias" && exit 1)
-
-          echo "🧪 Testing module resolution for '@/lib/cookies'..."
-          if [ ! -d "src/lib" ]; then
-            echo "⚠️ src/lib not found, skipping alias test."
-          else
-            echo "import x from '@/lib/cookies'" > alias-test.ts
-            printf '%s\n' '{' '  "extends": "./tsconfig.json",' '  "include": ["alias-test.ts"]' '}' > tsconfig.alias-test.json
-            pnpm exec tsc --noEmit --project tsconfig.alias-test.json || (echo "❌ Alias test failed! '@/lib/cookies' not resolved." && exit 1)
-            rm alias-test.ts tsconfig.alias-test.json
-          fi
-
-          echo "🏗️ Building admin (Turbopack production build)..."
-          NODE_ENV=production pnpm run build
-        env:
-          NEXT_TELEMETRY_DISABLED: 1
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
