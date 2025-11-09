@@ -5,6 +5,9 @@ WORKDIR /app
 
 ENV NEXT_DISABLE_FONT_DOWNLOADS=1
 
+# 确保 public 目录存在，避免 COPY 阶段因缺失而失败
+RUN mkdir -p public
+
 # 安装 pnpm
 RUN npm install -g pnpm
 
