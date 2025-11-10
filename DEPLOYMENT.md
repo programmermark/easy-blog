@@ -88,7 +88,7 @@ DATABASE_URL=postgresql://postgres:!Aa13349817311@postgres:5432/easy_blog?schema
 JWT_SECRET=your_super_secret_jwt_key_change_in_production
 
 # API 地址配置
-NEXT_PUBLIC_API_URL=https://your-domain.com/api
+NEXT_PUBLIC_API_URL=NEXT_PUBLIC_API_URL/api
 ```
 
 ### 3. 配置域名和 SSL
