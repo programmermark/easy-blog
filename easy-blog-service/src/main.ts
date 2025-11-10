@@ -9,6 +9,9 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  const GLOBAL_PREFIX = 'api';
+  app.setGlobalPrefix(GLOBAL_PREFIX);
+
   // 全局验证管道
   app.useGlobalPipes(
     new ValidationPipe({
@@ -83,11 +86,11 @@ async function bootstrap() {
     `,
   };
 
-  SwaggerModule.setup('api', app, document, customOptions);
+  SwaggerModule.setup(`${GLOBAL_PREFIX}/docs`, app, document, customOptions);
 
   const port = process.env.PORT || 8000;
   await app.listen(port);
-  console.log(`🚀 Application is running on: http://localhost:${port}`);
-  console.log(`📚 Swagger documentation: http://localhost:${port}/api`);
+  console.log(`🚀 Application is running on: http://localhost:${port}/${GLOBAL_PREFIX}`);
+  console.log(`📚 Swagger documentation: http://localhost:${port}/${GLOBAL_PREFIX}/docs`);
 }
 bootstrap();
