@@ -2,6 +2,7 @@
 const isProd = process.env.NODE_ENV === "production";
 
 const nextConfig = {
+  basePath: isProd ? "/admin" : "",
   assetPrefix: isProd ? "/admin" : undefined,
   images: {
     remotePatterns: [
