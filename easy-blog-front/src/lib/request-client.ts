@@ -1,6 +1,20 @@
 import { env } from "@/env";
 
-const BASE_URL = env.NEXT_PUBLIC_API_BASE_URL;
+const resolveBaseUrl = () => {
+  const base = env.NEXT_PUBLIC_API_BASE_URL;
+  if (
+    typeof window !== "undefined" &&
+    (base.startsWith("http://localhost") ||
+      base.startsWith("https://localhost") ||
+      base.startsWith("http://127.0.0.1") ||
+      base.startsWith("https://127.0.0.1"))
+  ) {
+    return "/api";
+  }
+  return base;
+};
+
+const BASE_URL = resolveBaseUrl();
 
 async function request<T>(input: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE_URL}${input}`, {
