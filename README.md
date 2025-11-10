@@ -82,9 +82,9 @@ pnpm run start:dev
 
 ```bash
 cd easy-blog-front
-# 创建环境变量文件
-echo "NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
-NEXT_PUBLIC_UPLOAD_URL=http://localhost:8000/upload" > .env.local
+# 创建环境变量文件（无反向代理时可改为 http://localhost:8000 等绝对地址）
+echo "NEXT_PUBLIC_API_BASE_URL=/api
+NEXT_PUBLIC_UPLOAD_URL=/uploads" > .env.local
 
 # 启动开发服务器
 pnpm run dev
@@ -94,7 +94,7 @@ pnpm run dev
 
 ```bash
 cd easy-blog-admin
-# 创建环境变量文件
+# 创建环境变量文件（可根据部署环境调整为实际 API 地址）
 echo "NEXT_PUBLIC_API_BASE_URL=http://localhost:8000" > .env.local
 
 # 启动开发服务器

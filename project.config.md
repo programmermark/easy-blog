@@ -13,13 +13,15 @@ PORT=8000
 ### 前端 (easy-blog-front/.env.local)
 
 ```bash
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
-NEXT_PUBLIC_UPLOAD_URL=http://localhost:8000/upload
+# 默认使用相同域名下的反向代理路径，如无 Nginx 代理可改成 http://localhost:8000
+NEXT_PUBLIC_API_BASE_URL=/api
+NEXT_PUBLIC_UPLOAD_URL=/uploads
 ```
 
 ### 后台 (easy-blog-admin/.env.local)
 
 ```bash
+# 根据部署环境调整为实际后端服务地址
 NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
 ```
 

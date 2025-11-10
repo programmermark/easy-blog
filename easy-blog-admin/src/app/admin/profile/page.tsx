@@ -37,6 +37,12 @@ type ProfileData = {
   backgroundImage?: string;
 };
 
+const resolveAssetUrl = (url?: string) => {
+  if (!url) return url;
+  if (url.startsWith("http")) return url;
+  return url.startsWith("/") ? url : `/${url}`;
+};
+
 export default function AdminProfilePage() {
   const [form] = Form.useForm<ProfileData>();
   const [submitting, setSubmitting] = useState(false);
@@ -230,11 +236,7 @@ export default function AdminProfilePage() {
                 {avatarBase64 ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={
-                      avatarBase64.startsWith("http")
-                        ? avatarBase64
-                        : `http://localhost:8000${avatarBase64}`
-                    }
+                    src={resolveAssetUrl(avatarBase64)!}
                     alt="avatar"
                     style={{
                       width: "100%",
@@ -281,11 +283,7 @@ export default function AdminProfilePage() {
               >
                 {backgroundImage ? (
                   <Image
-                    src={
-                      backgroundImage.startsWith("http")
-                        ? backgroundImage
-                        : `http://localhost:8000${backgroundImage}`
-                    }
+                    src={resolveAssetUrl(backgroundImage)!}
                     alt="background"
                     fill
                     style={{
