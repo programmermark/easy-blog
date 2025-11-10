@@ -57,4 +57,4 @@ USER nestjs
 EXPOSE 8000
 
 # 启动应用
-CMD ["node", "dist/main"]
+CMD ["node", "dist/src/main"]

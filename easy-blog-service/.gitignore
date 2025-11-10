@@ -89,7 +89,6 @@ playwright/.cache/
 
 # Prisma
 /generated/prisma
-prisma/migrations/
 
 # Test cookies and temporary files
 *_cookies.txt
