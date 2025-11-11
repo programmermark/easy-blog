@@ -89,6 +89,7 @@ JWT_SECRET=your_super_secret_jwt_key_change_in_production
 
 # API 地址配置
 NEXT_PUBLIC_API_URL=http://your-domain.com/blog-service
+NEXT_PUBLIC_UPLOAD_URL=http://your-domain.com/blog-service/upload
 ```
 
 ### 3. 配置域名和 SSL

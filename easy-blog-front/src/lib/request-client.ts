@@ -9,7 +9,7 @@ const resolveBaseUrl = () => {
       base.startsWith("http://127.0.0.1") ||
       base.startsWith("https://127.0.0.1"))
   ) {
-    return "/api";
+    return "/blog-service";
   }
   return base;
 };

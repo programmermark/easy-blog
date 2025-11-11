@@ -30,6 +30,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useAuthCheck } from "@/hooks/useAuthCheck";
 import HomeLayout from "@/components/HomeLayout";
 import { ADMIN_BASE_PATH, ADMIN_APP_BASE_PATH } from "@/config/basePath";
+import { ADMIN_BASE_PATH, ADMIN_APP_BASE_PATH } from "@/config/basePath";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -138,11 +139,13 @@ export default function HomePage() {
               >
                 立即登录
               </Button>
-              <Button
-                size="large"
-                icon={<UserAddOutlined />}
-                onClick={() => router.push("/register")}
-              >
+                <Button
+                  size="large"
+                  icon={<UserAddOutlined />}
+                  onClick={() =>
+                    router.push(`${ADMIN_BASE_PATH}/register`)
+                  }
+                >
                 注册账户
               </Button>
             </Space>
