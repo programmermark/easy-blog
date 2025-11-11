@@ -46,7 +46,6 @@
 **/*.sqlite3
 **/prisma/dev.db
 **/prisma/*.db
-**/prisma/migrations/
 
 # logs
 **/logs/
