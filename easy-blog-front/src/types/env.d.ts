@@ -5,7 +5,7 @@ declare namespace NodeJS {
     API_SECRET: string;
 
     // 客户端可见（会被内联到浏览器代码）
-    NEXT_PUBLIC_API_BASE_URL: string;
+    NEXT_PUBLIC_API_URL: string;
 
     NODE_ENV: "development" | "production" | "test";
   }

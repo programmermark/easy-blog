@@ -1,7 +1,7 @@
 import { env } from "@/env";
 
 const resolveBaseUrl = () => {
-  const base = env.NEXT_PUBLIC_API_BASE_URL;
+  const base = env.NEXT_PUBLIC_API_URL;
   if (
     typeof window !== "undefined" &&
     (base.startsWith("http://localhost") ||

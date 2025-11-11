@@ -70,7 +70,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
               src={
                 article.introduceImg.startsWith("http")
                   ? article.introduceImg
-                  : `${env.NEXT_PUBLIC_API_BASE_URL}${article.introduceImg}`
+                  : `${env.NEXT_PUBLIC_API_URL}${article.introduceImg}`
               }
               alt={article.title}
               width={128}

@@ -2,10 +2,7 @@ import axios from "axios";
 import { tokenCookies, refreshTokenCookies, clearAuthCookies } from "./cookies";
 
 const requestClient = axios.create({
-  baseURL:
-    process.env.NEXT_PUBLIC_API_URL ||
-    process.env.NEXT_PUBLIC_API_BASE_URL ||
-    "http://localhost:8000",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000",
   timeout: 10000,
   withCredentials: true, // 允许发送 cookies
 });

@@ -67,7 +67,7 @@ export default function Author() {
             src={
               data.backgroundImage.startsWith("http")
                 ? data.backgroundImage
-                : `${env.NEXT_PUBLIC_API_BASE_URL}${data.backgroundImage}`
+                : `${env.NEXT_PUBLIC_API_URL}${data.backgroundImage}`
             }
             alt="背景图片"
             fill
@@ -80,7 +80,7 @@ export default function Author() {
             src={
               data.avatarBase64.startsWith("http")
                 ? data.avatarBase64
-                : `${env.NEXT_PUBLIC_API_BASE_URL}${data.avatarBase64}`
+                : `${env.NEXT_PUBLIC_API_URL}${data.avatarBase64}`
             }
             alt="头像背景"
             fill
@@ -111,7 +111,7 @@ export default function Author() {
             data.avatarBase64
               ? data.avatarBase64.startsWith("http")
                 ? data.avatarBase64
-                : `${env.NEXT_PUBLIC_API_BASE_URL}${data.avatarBase64}`
+                : `${env.NEXT_PUBLIC_API_URL}${data.avatarBase64}`
               : undefined
           }
           icon={<UserOutlined />}

@@ -81,7 +81,7 @@ export default function CommentInput({
     if (info.file.status === "done") {
       const res = info.file.response;
       if (res.success) {
-        const avatarUrl = `${env.NEXT_PUBLIC_API_BASE_URL}${res.data.url}`;
+        const avatarUrl = `${env.NEXT_PUBLIC_API_URL}${res.data.url}`;
         onAvatarChange(avatarUrl);
         message.success("头像上传成功");
       }

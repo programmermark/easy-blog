@@ -14,7 +14,7 @@ PORT=8000
 
 ```bash
 # 默认使用相同域名下的反向代理路径，如无 Nginx 代理可改成 http://localhost:8000
-NEXT_PUBLIC_API_BASE_URL=/api
+NEXT_PUBLIC_API_URL=/api
 NEXT_PUBLIC_UPLOAD_URL=/uploads
 ```
 
@@ -22,7 +22,7 @@ NEXT_PUBLIC_UPLOAD_URL=/uploads
 
 ```bash
 # 根据部署环境调整为实际后端服务地址
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 ### 后端 (easy-blog-service/.env)
@@ -78,7 +78,7 @@ cd easy-blog-service && npx prisma migrate reset
 DATABASE_URL="postgresql://user:password@localhost:5432/easy_blog"
 
 # API地址
-NEXT_PUBLIC_API_BASE_URL=https://api.yourdomain.com
+NEXT_PUBLIC_API_URL=https://api.yourdomain.com
 NEXT_PUBLIC_UPLOAD_URL=https://api.yourdomain.com/upload
 
 # JWT密钥（生产环境请使用强密钥）

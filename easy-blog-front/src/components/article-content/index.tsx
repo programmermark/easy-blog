@@ -49,7 +49,7 @@ export default function ArticleContent({ article }: ArticleContentProps) {
               src={
                 article.coverImage.startsWith("http")
                   ? article.coverImage
-                  : `${env.NEXT_PUBLIC_API_BASE_URL}${article.coverImage}`
+                  : `${env.NEXT_PUBLIC_API_URL}${article.coverImage}`
               }
               alt="文章配图"
               width={800}

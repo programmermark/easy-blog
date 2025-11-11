@@ -63,7 +63,7 @@ export default function CoverDesignerPage() {
   const handleImageSuccess = (response: any, type: "image1" | "image2") => {
     message.success("上传图片成功");
     // 后端直接返回文件信息，不是包装在success/data中
-    const imageUrl = `${env.NEXT_PUBLIC_API_BASE_URL}${response.url}`;
+    const imageUrl = `${env.NEXT_PUBLIC_API_URL}${response.url}`;
     if (type === "image1") {
       setForm((prev) => ({ ...prev, image1: imageUrl }));
     } else {

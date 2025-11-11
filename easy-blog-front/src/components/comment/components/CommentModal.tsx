@@ -32,7 +32,7 @@ export default function CommentModal({
 
       // 调用访客登录API
       const response = await fetch(
-        `${env.NEXT_PUBLIC_API_BASE_URL}/visitor/login`,
+        `${env.NEXT_PUBLIC_API_URL}/visitor/login`,
         {
           method: "POST",
           headers: {
