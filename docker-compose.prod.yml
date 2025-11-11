@@ -6,6 +6,9 @@ services:
     build:
       context: ./easy-blog-admin
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
     image: ${REGISTRY}/${IMAGE_NAME}-admin:latest
     container_name: easy-blog-admin
     restart: unless-stopped
@@ -45,6 +48,9 @@ services:
     build:
       context: ./easy-blog-front
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
     image: ${REGISTRY}/${IMAGE_NAME}-frontend:latest
     container_name: easy-blog-frontend
     restart: unless-stopped
