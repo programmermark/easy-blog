@@ -26,7 +26,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import AuthGuard from "@/components/AuthGuard";
 import { useState } from "react";
-import { ADMIN_BASE_PATH, ADMIN_APP_BASE_PATH } from "@/config/basePath";
+import { ADMIN_APP_RELATIVE_BASE_PATH, stripAdminBasePath } from "@/config/basePath";
 
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
@@ -40,30 +40,31 @@ export default function AdminLayout({
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
+  const normalizedPathname = stripAdminBasePath(pathname);
 
   const menuItems = [
     {
-      key: `${ADMIN_APP_BASE_PATH}`,
+      key: `${ADMIN_APP_RELATIVE_BASE_PATH}`,
       icon: <DashboardOutlined />,
       label: "仪表板",
     },
     {
-      key: `${ADMIN_APP_BASE_PATH}/posts`,
+      key: `${ADMIN_APP_RELATIVE_BASE_PATH}/posts`,
       icon: <BookOutlined />,
       label: "文章管理",
     },
     {
-      key: `${ADMIN_APP_BASE_PATH}/categories`,
+      key: `${ADMIN_APP_RELATIVE_BASE_PATH}/categories`,
       icon: <FolderOutlined />,
       label: "分类管理",
     },
     {
-      key: `${ADMIN_APP_BASE_PATH}/tags`,
+      key: `${ADMIN_APP_RELATIVE_BASE_PATH}/tags`,
       icon: <TagsOutlined />,
       label: "标签管理",
     },
     {
-      key: `${ADMIN_APP_BASE_PATH}/profile`,
+      key: `${ADMIN_APP_RELATIVE_BASE_PATH}/profile`,
       icon: <SettingOutlined />,
       label: "个人信息",
     },
@@ -75,7 +76,7 @@ export default function AdminLayout({
 
   const handleLogout = () => {
     logout();
-    router.push(`${ADMIN_BASE_PATH}/login`);
+    router.push("/login");
   };
 
   const userMenuItems = [
@@ -102,21 +103,21 @@ export default function AdminLayout({
             <span>首页</span>
           </Space>
         ),
-        href: ADMIN_BASE_PATH,
+        href: "/",
       },
     ];
 
-    if (pathname === ADMIN_APP_BASE_PATH) {
+    if (normalizedPathname === ADMIN_APP_RELATIVE_BASE_PATH) {
       items.push({
         title: <span>仪表板</span>,
       });
-    } else if (pathname === `${ADMIN_APP_BASE_PATH}/posts`) {
+    } else if (normalizedPathname === `${ADMIN_APP_RELATIVE_BASE_PATH}/posts`) {
       items.push({ title: <span>文章管理</span> });
-    } else if (pathname === `${ADMIN_APP_BASE_PATH}/categories`) {
+    } else if (normalizedPathname === `${ADMIN_APP_RELATIVE_BASE_PATH}/categories`) {
       items.push({ title: <span>分类管理</span> });
-    } else if (pathname === `${ADMIN_APP_BASE_PATH}/tags`) {
+    } else if (normalizedPathname === `${ADMIN_APP_RELATIVE_BASE_PATH}/tags`) {
       items.push({ title: <span>标签管理</span> });
-    } else if (pathname === `${ADMIN_APP_BASE_PATH}/profile`) {
+    } else if (normalizedPathname === `${ADMIN_APP_RELATIVE_BASE_PATH}/profile`) {
       items.push({ title: <span>个人信息</span> });
     }
 
@@ -149,7 +150,7 @@ export default function AdminLayout({
           <Menu
             theme="light"
             mode="inline"
-            selectedKeys={[pathname]}
+          selectedKeys={[normalizedPathname]}
             items={menuItems}
             onClick={handleMenuClick}
             className="border-r-0"

@@ -1,9 +1,9 @@
 import axios from "axios";
 import { tokenCookies, refreshTokenCookies, clearAuthCookies } from "./cookies";
-import { ADMIN_BASE_PATH } from "@/config/basePath";
+import { withAdminBasePath } from "@/config/basePath";
 
 const requestClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/blog-service",
   timeout: 10000,
   withCredentials: true, // 允许发送 cookies
 });
@@ -49,7 +49,7 @@ requestClient.interceptors.response.use(
         // 刷新失败，清除所有认证 cookie
         clearAuthCookies();
         if (typeof window !== "undefined") {
-          window.location.href = `${ADMIN_BASE_PATH}/login`;
+          window.location.href = withAdminBasePath("/login");
         }
         return Promise.reject(refreshError);
       }

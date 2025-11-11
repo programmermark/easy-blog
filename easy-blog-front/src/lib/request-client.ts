@@ -1,20 +1,8 @@
 import { env } from "@/env";
 
-const resolveBaseUrl = () => {
-  const base = env.NEXT_PUBLIC_API_URL;
-  if (
-    typeof window !== "undefined" &&
-    (base.startsWith("http://localhost") ||
-      base.startsWith("https://localhost") ||
-      base.startsWith("http://127.0.0.1") ||
-      base.startsWith("https://127.0.0.1"))
-  ) {
-    return "/blog-service";
-  }
-  return base;
-};
+const normalizeBaseUrl = (url: string) => url.replace(/\/+$/, "");
 
-const BASE_URL = resolveBaseUrl();
+const BASE_URL = normalizeBaseUrl(env.NEXT_PUBLIC_API_URL);
 
 async function request<T>(input: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE_URL}${input}`, {

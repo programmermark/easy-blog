@@ -22,7 +22,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { LoginDto } from "@/types";
 import Link from "next/link";
-import { ADMIN_BASE_PATH, ADMIN_APP_BASE_PATH } from "@/config/basePath";
+import { ADMIN_APP_RELATIVE_BASE_PATH } from "@/config/basePath";
 
 const { Text, Title } = Typography;
 
@@ -38,7 +38,7 @@ export default function LoginPage() {
     try {
       await login(values);
       message.success("登录成功");
-      router.push(ADMIN_APP_BASE_PATH);
+      router.push(ADMIN_APP_RELATIVE_BASE_PATH);
     } catch (error: unknown) {
       message.error(error instanceof Error ? error.message : "登录失败");
     } finally {
@@ -229,7 +229,7 @@ export default function LoginPage() {
                 <Space>
                   <Text className="text-gray-600">还没有账户？</Text>
                   <Link
-                    href={`${ADMIN_BASE_PATH}/register`}
+                    href={`/register`}
                     className="text-blue-500 hover:text-blue-600 font-medium transition-colors duration-200 flex items-center"
                   >
                     <UserAddOutlined className="mr-1" />

@@ -26,7 +26,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { RegisterDto } from "@/types";
 import Link from "next/link";
 import requestClient from "@/lib/request-client";
-import { ADMIN_BASE_PATH, ADMIN_APP_BASE_PATH } from "@/config/basePath";
+import { ADMIN_APP_RELATIVE_BASE_PATH } from "@/config/basePath";
 
 const { Title, Text } = Typography;
 
@@ -53,7 +53,7 @@ export default function RegisterPage() {
       // 注册成功后自动登录
       await login({ email: values.email, password: values.password });
       message.success("注册成功，已自动登录");
-      router.push(ADMIN_APP_BASE_PATH);
+      router.push(ADMIN_APP_RELATIVE_BASE_PATH);
     } catch (error: unknown) {
       message.error(error instanceof Error ? error.message : "注册失败");
     } finally {
@@ -270,7 +270,7 @@ export default function RegisterPage() {
                 <Space>
                   <Text className="text-gray-600">已有账户？</Text>
                   <Link
-                    href={`${ADMIN_BASE_PATH}/login`}
+                    href={`/login`}
                     className="text-purple-500 hover:text-purple-600 font-medium transition-colors duration-200 flex items-center"
                   >
                     <LoginOutlined className="mr-1" />

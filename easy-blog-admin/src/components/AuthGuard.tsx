@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Spin } from "antd";
 import { useAuth } from "@/hooks/useAuth";
-import { ADMIN_BASE_PATH } from "@/config/basePath";
 import { useAuthCheck } from "@/hooks/useAuthCheck";
 
 interface AuthGuardProps {
@@ -21,7 +20,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   useEffect(() => {
     // 只有在状态恢复完成且不在加载中且未认证时才跳转
     if (isHydrated && !isLoading && !isAuthenticated) {
-      router.push(`${ADMIN_BASE_PATH}/login`);
+      router.push("/login");
     }
   }, [isAuthenticated, isLoading, isHydrated, router]);
 

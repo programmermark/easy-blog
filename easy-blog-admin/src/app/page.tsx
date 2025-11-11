@@ -29,8 +29,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { useAuthCheck } from "@/hooks/useAuthCheck";
 import HomeLayout from "@/components/HomeLayout";
-import { ADMIN_BASE_PATH, ADMIN_APP_BASE_PATH } from "@/config/basePath";
-import { ADMIN_BASE_PATH, ADMIN_APP_BASE_PATH } from "@/config/basePath";
+import { ADMIN_APP_RELATIVE_BASE_PATH } from "@/config/basePath";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -44,7 +43,7 @@ export default function HomePage() {
   useEffect(() => {
     // 只有在状态恢复完成且已认证时才跳转
     if (isHydrated && isAuthenticated) {
-      router.push(ADMIN_APP_BASE_PATH);
+      router.push(ADMIN_APP_RELATIVE_BASE_PATH);
     }
   }, [isAuthenticated, isHydrated, router]);
 
@@ -135,17 +134,15 @@ export default function HomePage() {
                 type="primary"
                 size="large"
                 icon={<LoginOutlined />}
-                onClick={() => router.push(`${ADMIN_BASE_PATH}/login`)}
+                onClick={() => router.push("/login")}
               >
                 立即登录
               </Button>
-                <Button
-                  size="large"
-                  icon={<UserAddOutlined />}
-                  onClick={() =>
-                    router.push(`${ADMIN_BASE_PATH}/register`)
-                  }
-                >
+              <Button
+                size="large"
+                icon={<UserAddOutlined />}
+                onClick={() => router.push("/register")}
+              >
                 注册账户
               </Button>
             </Space>

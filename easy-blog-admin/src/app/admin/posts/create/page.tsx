@@ -13,7 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Post, Category, Tag } from "@/types";
 import requestClient from "@/lib/request-client";
 import PostForm from "@/components/PostForm";
-import { ADMIN_BASE_PATH, ADMIN_APP_BASE_PATH } from "@/config/basePath";
+import { ADMIN_APP_RELATIVE_BASE_PATH } from "@/config/basePath";
 
 const { Title } = Typography;
 
@@ -43,7 +43,7 @@ export default function CreatePostPage() {
     try {
       await requestClient.post("/posts", values);
       message.success("文章创建成功");
-      router.push(`${ADMIN_APP_BASE_PATH}/posts`);
+      router.push(`${ADMIN_APP_RELATIVE_BASE_PATH}/posts`);
     } catch (error: any) {
       message.error(error.response?.data?.message || "创建失败");
     } finally {
@@ -56,7 +56,7 @@ export default function CreatePostPage() {
     try {
       await requestClient.post("/posts", { ...values, status: "DRAFT" });
       message.success("草稿保存成功");
-      router.push(`${ADMIN_APP_BASE_PATH}/posts`);
+      router.push(`${ADMIN_APP_RELATIVE_BASE_PATH}/posts`);
     } catch (error: any) {
       message.error(error.response?.data?.message || "保存失败");
     } finally {
@@ -79,8 +79,11 @@ export default function CreatePostPage() {
             <div className="flex-1">
               <Breadcrumb
                 items={[
-                  { title: "首页", href: ADMIN_BASE_PATH },
-                  { title: "文章管理", href: `${ADMIN_APP_BASE_PATH}/posts` },
+                  { title: "首页", href: "/" },
+                  {
+                    title: "文章管理",
+                    href: `${ADMIN_APP_RELATIVE_BASE_PATH}/posts`,
+                  },
                   { title: "创建文章" },
                 ]}
                 className="mb-2"
