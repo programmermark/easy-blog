@@ -2,6 +2,8 @@
 const path = require("path");
 
 const nextConfig = {
+  basePath: "/blog",
+  assetPrefix: "/blog",
   images: {
     remotePatterns: [
       {

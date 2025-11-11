@@ -14,8 +14,8 @@ PORT=8000
 
 ```bash
 # 默认使用相同域名下的反向代理路径，如无 Nginx 代理可改成 http://localhost:8000
-NEXT_PUBLIC_API_URL=/api
-NEXT_PUBLIC_UPLOAD_URL=/uploads
+NEXT_PUBLIC_API_URL=/blog-service
+NEXT_PUBLIC_UPLOAD_URL=/blog-service/upload
 ```
 
 ### 后台 (easy-blog-admin/.env.local)
@@ -33,12 +33,12 @@ JWT_SECRET="your-jwt-secret-key"
 PORT=8000
 ```
 
-## 端口配置
+## 端口与访问路径
 
-- 前端网站: http://localhost:9000
-- 后台管理: http://localhost:3000
-- 后端 API: http://localhost:8000
-- API 文档: http://localhost:8000/api-docs
+- 前端网站: http://localhost:3000/blog
+- 后台管理: http://localhost:3000/blog-admin
+- 后端 API: http://localhost:8000/blog-service
+- API 文档: http://localhost:8000/blog-service/docs
 
 ## 开发命令
 
@@ -78,8 +78,8 @@ cd easy-blog-service && npx prisma migrate reset
 DATABASE_URL="postgresql://user:password@localhost:5432/easy_blog"
 
 # API地址
-NEXT_PUBLIC_API_URL=https://api.yourdomain.com
-NEXT_PUBLIC_UPLOAD_URL=https://api.yourdomain.com/upload
+NEXT_PUBLIC_API_URL=https://api.yourdomain.com/blog-service
+NEXT_PUBLIC_UPLOAD_URL=https://api.yourdomain.com/blog-service/upload
 
 # JWT密钥（生产环境请使用强密钥）
 JWT_SECRET="your-production-jwt-secret"

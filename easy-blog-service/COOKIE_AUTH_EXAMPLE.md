@@ -4,6 +4,8 @@
 
 服务端现在使用 HTTP-only cookie 来存储和传输 JWT token，而不是在响应体中返回 token。这提供了更好的安全性，因为 JavaScript 无法访问 HTTP-only cookie。
 
+> 提示：部署到服务器时，以下示例中的 `/api/*` 需要替换为 `/blog-service/*`。
+
 ## 前端使用方式
 
 ### 1. 登录

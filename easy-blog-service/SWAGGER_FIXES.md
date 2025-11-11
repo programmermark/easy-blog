@@ -66,7 +66,7 @@
 ### 4. 使用方法
 
 1. 启动开发服务器: `npm run start:dev`
-2. 访问 Swagger 文档: `http://localhost:8000/api`
+2. 访问 Swagger 文档: `http://localhost:8000/blog-service/docs`
 3. 现在可以看到完整的 API 类型信息和示例
 
 ### 5. 注意事项

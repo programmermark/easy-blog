@@ -126,7 +126,7 @@ pnpm run start:prod
 启动服务后，访问 Swagger 文档：
 
 ```
-http://localhost:8000/api
+http://localhost:8000/blog-service/docs
 ```
 
 ## API 接口

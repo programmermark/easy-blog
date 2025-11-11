@@ -88,7 +88,7 @@ DATABASE_URL=postgresql://postgres:!Aa13349817311@postgres:5432/easy_blog?schema
 JWT_SECRET=your_super_secret_jwt_key_change_in_production
 
 # API 地址配置
-NEXT_PUBLIC_API_URL=NEXT_PUBLIC_API_URL/api
+NEXT_PUBLIC_API_URL=http://your-domain.com/blog-service
 ```
 
 ### 3. 配置域名和 SSL
@@ -327,4 +327,4 @@ docker-compose -f docker-compose.prod.yml up -d
 
 - 前端：https://your-domain.com
 - 管理后台：https://your-domain.com/admin
-- API 文档：https://your-domain.com/api/docs
+- API 文档：https://your-domain.com/blog-service/docs

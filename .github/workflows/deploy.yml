@@ -129,6 +129,7 @@ jobs:
           cache-to: type=gha,scope=frontend-${{ github.run_id }},mode=max
           build-args: |
             NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_UPLOAD_URL=${{ secrets.NEXT_PUBLIC_UPLOAD_URL }}
 
       - name: Build and push backend image
         uses: docker/build-push-action@v5
@@ -161,6 +162,7 @@ jobs:
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
             NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_UPLOAD_URL=${{ secrets.NEXT_PUBLIC_UPLOAD_URL }}
             EOF
 
             git pull origin main

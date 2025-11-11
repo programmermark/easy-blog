@@ -11,6 +11,10 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiOperation, ApiConsumes, ApiResponse } from '@nestjs/swagger';
 import { UploadService } from './upload.service';
+
+const UPLOAD_PREFIX = process.env.API_GLOBAL_PREFIX
+  ? `/${process.env.API_GLOBAL_PREFIX}/uploads`
+  : '/uploads';
 import { diskStorage } from 'multer';
 
 @ApiTags('upload')
@@ -93,7 +97,7 @@ export class UploadController {
     // 文件已经保存到正确位置，直接生成URL
     const path = require('path');
     const relativePath = path.relative('uploads', file.path);
-    const url = `/uploads/${relativePath}`;
+    const url = `${UPLOAD_PREFIX}/${relativePath}`;
 
     return {
       url,

@@ -6,6 +6,9 @@ import { existsSync, mkdirSync } from 'fs';
 @Injectable()
 export class UploadService {
   private readonly uploadPath = 'uploads';
+  private readonly uploadUrlPrefix = process.env.API_GLOBAL_PREFIX
+    ? `/${process.env.API_GLOBAL_PREFIX}/uploads`
+    : '/uploads';
 
   constructor() {
     // 确保上传目录存在
@@ -44,7 +47,7 @@ export class UploadService {
 
     return {
       filePath,
-      url: `/uploads/${relativePath}`,
+      url: `${this.uploadUrlPrefix}/${relativePath}`,
     };
   }
 

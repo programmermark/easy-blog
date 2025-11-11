@@ -32,7 +32,7 @@ check_service_health() {
     echo "🏥 检查服务健康状态..."
     
     # 检查后端 API
-    if curl -f -s http://localhost/api/health > /dev/null; then
+    if curl -f -s http://localhost/blog-service/health > /dev/null; then
         echo "✅ 后端 API 健康"
     else
         echo "❌ 后端 API 不健康"
@@ -40,7 +40,7 @@ check_service_health() {
     fi
     
     # 检查前端
-    if curl -f -s http://localhost/ > /dev/null; then
+    if curl -f -s http://localhost/blog/ > /dev/null; then
         echo "✅ 前端服务健康"
     else
         echo "❌ 前端服务不健康"
@@ -48,7 +48,7 @@ check_service_health() {
     fi
     
     # 检查管理后台
-    if curl -f -s http://localhost/admin > /dev/null; then
+    if curl -f -s http://localhost/blog-admin/ > /dev/null; then
         echo "✅ 管理后台健康"
     else
         echo "❌ 管理后台不健康"

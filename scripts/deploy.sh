@@ -92,6 +92,6 @@ echo "🧹 清理旧镜像..."
 docker image prune -f
 
 echo "✅ 部署完成！"
-echo "🌐 前端地址: http://your-domain.com"
-echo "🔧 管理后台: http://your-domain.com/admin"
-echo "📊 API 文档: http://your-domain.com/api/docs"
+echo "🌐 前端地址: http://your-domain.com/blog"
+echo "🔧 管理后台: http://your-domain.com/blog-admin"
+echo "📊 API 文档: http://your-domain.com/blog-service/docs"

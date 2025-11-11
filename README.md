@@ -83,7 +83,7 @@ pnpm run start:dev
 ```bash
 cd easy-blog-front
 # 创建环境变量文件（无反向代理时可改为 http://localhost:8000 等绝对地址）
-echo "NEXT_PUBLIC_API_URL=/api
+echo "NEXT_PUBLIC_API_URL=/blog-service
 NEXT_PUBLIC_UPLOAD_URL=/uploads" > .env.local
 
 # 启动开发服务器
@@ -95,7 +95,7 @@ pnpm run dev
 ```bash
 cd easy-blog-admin
 # 创建环境变量文件（可根据部署环境调整为实际 API 地址）
-echo "NEXT_PUBLIC_API_URL=http://localhost:8000" > .env.local
+echo "NEXT_PUBLIC_API_URL=http://localhost:8000/blog-service" > .env.local
 
 # 启动开发服务器
 pnpm run dev
@@ -150,33 +150,33 @@ pnpm run dev
 
 ## 📱 页面路由
 
-### 前端网站 (http://localhost:9000)
+### 前端网站 (http://localhost:3000/blog)
 
-- `/` - 首页
-- `/post/[id]` - 文章详情
-- `/about` - 关于我
-- `/production` - 作品集
-- `/tools` - 工具页面
-- `/tools/cover-designer` - 封面设计器
-- `/resume` - 简历
+- `/blog` - 首页
+- `/blog/post/[id]` - 文章详情
+- `/blog/about` - 关于我
+- `/blog/production` - 作品集
+- `/blog/tools` - 工具页面
+- `/blog/tools/cover-designer` - 封面设计器
+- `/blog/resume` - 简历
 
-### 后台管理 (http://localhost:3000)
+### 后台管理 (http://localhost:3000/blog-admin)
 
-- `/admin` - 管理首页
-- `/admin/posts` - 文章管理
-- `/admin/categories` - 分类管理
-- `/admin/tags` - 标签管理
-- `/admin/profile` - 个人资料
+- `/blog-admin/admin` - 管理首页
+- `/blog-admin/admin/posts` - 文章管理
+- `/blog-admin/admin/categories` - 分类管理
+- `/blog-admin/admin/tags` - 标签管理
+- `/blog-admin/admin/profile` - 个人资料
 
-### 后端 API (http://localhost:8000)
+### 后端 API (http://localhost:8000/blog-service)
 
-- `/api/posts` - 文章相关 API
-- `/api/categories` - 分类相关 API
-- `/api/tags` - 标签相关 API
-- `/api/comments` - 评论相关 API
-- `/api/visitor` - 访客相关 API
-- `/upload` - 文件上传 API
-- `/api-docs` - API 文档
+- `/blog-service/posts` - 文章相关 API
+- `/blog-service/categories` - 分类相关 API
+- `/blog-service/tags` - 标签相关 API
+- `/blog-service/comments` - 评论相关 API
+- `/blog-service/visitor` - 访客相关 API
+- `/blog-service/upload` - 文件上传 API
+- `/blog-service/docs` - API 文档
 
 ## 🗄️ 数据库结构
 
@@ -200,8 +200,8 @@ NODE_ENV=production
 DATABASE_URL=postgresql://user:password@localhost:5432/easy_blog
 
 # 前端
-NEXT_PUBLIC_API_URL=https://api.yourdomain.com
-NEXT_PUBLIC_UPLOAD_URL=https://api.yourdomain.com/upload
+NEXT_PUBLIC_API_URL=https://api.yourdomain.com/blog-service
+NEXT_PUBLIC_UPLOAD_URL=https://api.yourdomain.com/blog-service/upload
 ```
 
 ### Docker 部署

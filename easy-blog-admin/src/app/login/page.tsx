@@ -22,6 +22,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { LoginDto } from "@/types";
 import Link from "next/link";
+import { ADMIN_BASE_PATH } from "@/config/basePath";
 
 const { Text, Title } = Typography;
 
@@ -37,7 +38,7 @@ export default function LoginPage() {
     try {
       await login(values);
       message.success("登录成功");
-      router.push("/admin");
+      router.push(ADMIN_BASE_PATH);
     } catch (error: unknown) {
       message.error(error instanceof Error ? error.message : "登录失败");
     } finally {

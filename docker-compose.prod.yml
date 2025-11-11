@@ -49,12 +49,14 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_UPLOAD_URL: ${NEXT_PUBLIC_UPLOAD_URL}
     image: ${REGISTRY}/${IMAGE_NAME}-frontend:latest
     container_name: easy-blog-frontend
     restart: unless-stopped
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+      - NEXT_PUBLIC_UPLOAD_URL=${NEXT_PUBLIC_UPLOAD_URL}
     depends_on:
       admin:
         condition: service_started

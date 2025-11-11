@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { Category, Post, Tag as TagType } from "@/types";
 import requestClient from "@/lib/request-client";
 import PostForm from "@/components/PostForm";
+import { ADMIN_APP_BASE_PATH } from "@/config/basePath";
 
 export default function PostsPage() {
   const router = useRouter();
@@ -98,7 +99,7 @@ export default function PostsPage() {
   });
 
   const handleEdit = (post: Post) => {
-    router.push(`/admin/posts/${post.id}/edit`);
+    router.push(`${ADMIN_APP_BASE_PATH}/posts/${post.id}/edit`);
   };
 
   const handleDelete = (id: string) => {
@@ -110,7 +111,7 @@ export default function PostsPage() {
   };
 
   const handleCreate = () => {
-    router.push("/admin/posts/create");
+    router.push(`${ADMIN_APP_BASE_PATH}/posts/create`);
   };
 
   const columns = [

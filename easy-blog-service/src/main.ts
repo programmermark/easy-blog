@@ -9,7 +9,8 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  const GLOBAL_PREFIX = 'api';
+  const GLOBAL_PREFIX = 'blog-service';
+  process.env.API_GLOBAL_PREFIX = GLOBAL_PREFIX;
   app.setGlobalPrefix(GLOBAL_PREFIX);
 
   // 全局验证管道
@@ -32,7 +33,7 @@ async function bootstrap() {
 
   // 静态文件服务
   app.useStaticAssets(join(process.cwd(), 'uploads'), {
-    prefix: '/uploads/',
+    prefix: `/${GLOBAL_PREFIX}/uploads/`,
   });
 
   // Swagger 文档配置
@@ -90,7 +91,11 @@ async function bootstrap() {
 
   const port = process.env.PORT || 8000;
   await app.listen(port);
-  console.log(`🚀 Application is running on: http://localhost:${port}/${GLOBAL_PREFIX}`);
-  console.log(`📚 Swagger documentation: http://localhost:${port}/${GLOBAL_PREFIX}/docs`);
+  console.log(
+    `🚀 Application is running on: http://localhost:${port}/${GLOBAL_PREFIX}`,
+  );
+  console.log(
+    `📚 Swagger documentation: http://localhost:${port}/${GLOBAL_PREFIX}/docs`,
+  );
 }
 bootstrap();

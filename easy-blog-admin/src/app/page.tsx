@@ -29,6 +29,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { useAuthCheck } from "@/hooks/useAuthCheck";
 import HomeLayout from "@/components/HomeLayout";
+import { ADMIN_BASE_PATH, ADMIN_APP_BASE_PATH } from "@/config/basePath";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -42,7 +43,7 @@ export default function HomePage() {
   useEffect(() => {
     // 只有在状态恢复完成且已认证时才跳转
     if (isHydrated && isAuthenticated) {
-      router.push("/admin");
+      router.push(ADMIN_APP_BASE_PATH);
     }
   }, [isAuthenticated, isHydrated, router]);
 
@@ -133,7 +134,7 @@ export default function HomePage() {
                 type="primary"
                 size="large"
                 icon={<LoginOutlined />}
-                onClick={() => router.push("/login")}
+                onClick={() => router.push(`${ADMIN_BASE_PATH}/login`)}
               >
                 立即登录
               </Button>

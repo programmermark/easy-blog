@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === "production";
-
 const nextConfig = {
-  basePath: isProd ? "/admin" : "",
-  assetPrefix: isProd ? "/admin" : undefined,
+  basePath: "/blog-admin",
+  assetPrefix: "/blog-admin",
   images: {
     remotePatterns: [
       {

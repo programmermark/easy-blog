@@ -21,6 +21,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Post, Category, Tag } from "@/types";
 import requestClient from "@/lib/request-client";
 import PostForm from "@/components/PostForm";
+import { ADMIN_BASE_PATH, ADMIN_APP_BASE_PATH } from "@/config/basePath";
 
 const { Title } = Typography;
 
@@ -68,7 +69,7 @@ export default function EditPostPage() {
       message.success("文章更新成功");
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       queryClient.invalidateQueries({ queryKey: ["post", postId] });
-      router.push("/admin/posts");
+      router.push(`${ADMIN_APP_BASE_PATH}/posts`);
     },
     onError: (error: any) => {
       message.error(error.response?.data?.message || "更新失败");
@@ -111,7 +112,10 @@ export default function EditPostPage() {
     return (
       <div className="text-center py-12">
         <Title level={3}>文章不存在</Title>
-        <Button type="primary" onClick={() => router.push("/admin/posts")}>
+        <Button
+          type="primary"
+          onClick={() => router.push(`${ADMIN_APP_BASE_PATH}/posts`)}
+        >
           返回文章列表
         </Button>
       </div>
@@ -125,8 +129,8 @@ export default function EditPostPage() {
         <div>
           <Breadcrumb
             items={[
-              { title: "首页", href: "/" },
-              { title: "文章管理", href: "/admin/posts" },
+              { title: "首页", href: ADMIN_BASE_PATH },
+              { title: "文章管理", href: `${ADMIN_APP_BASE_PATH}/posts` },
               { title: "编辑文章" },
             ]}
           />

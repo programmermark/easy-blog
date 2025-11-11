@@ -26,6 +26,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 import Link from "next/link";
+import { ADMIN_BASE_PATH, ADMIN_APP_BASE_PATH } from "@/config/basePath";
 
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
@@ -42,27 +43,27 @@ export default function HomeLayout({ children }: HomeLayoutProps) {
 
   const menuItems = [
     {
-      key: "/",
+      key: ADMIN_BASE_PATH,
       icon: <HomeOutlined />,
       label: "首页",
     },
     {
-      key: "/admin",
+      key: ADMIN_APP_BASE_PATH,
       icon: <DashboardOutlined />,
       label: "管理后台",
     },
     {
-      key: "/admin/posts",
+      key: `${ADMIN_APP_BASE_PATH}/posts`,
       icon: <BookOutlined />,
       label: "文章管理",
     },
     {
-      key: "/admin/categories",
+      key: `${ADMIN_APP_BASE_PATH}/categories`,
       icon: <FolderOutlined />,
       label: "分类管理",
     },
     {
-      key: "/admin/tags",
+      key: `${ADMIN_APP_BASE_PATH}/tags`,
       icon: <TagsOutlined />,
       label: "标签管理",
     },
@@ -74,7 +75,7 @@ export default function HomeLayout({ children }: HomeLayoutProps) {
 
   const handleLogout = () => {
     logout();
-    router.push("/");
+    router.push(`${ADMIN_BASE_PATH}/login`);
   };
 
   const userMenuItems = isAuthenticated
@@ -96,13 +97,13 @@ export default function HomeLayout({ children }: HomeLayoutProps) {
           key: "login",
           icon: <LoginOutlined />,
           label: "登录",
-          onClick: () => router.push("/login"),
+          onClick: () => router.push(`${ADMIN_BASE_PATH}/login`),
         },
         {
           key: "register",
           icon: <UserAddOutlined />,
           label: "注册",
-          onClick: () => router.push("/register"),
+          onClick: () => router.push(`${ADMIN_BASE_PATH}/register`),
         },
       ];
 
@@ -152,7 +153,7 @@ export default function HomeLayout({ children }: HomeLayoutProps) {
               className="text-gray-600 hover:text-gray-900"
             />
             <Text strong className="text-lg">
-              {pathname === "/" ? "首页" : "博客管理后台"}
+              {pathname === ADMIN_BASE_PATH ? "首页" : "博客管理后台"}
             </Text>
           </div>
 
@@ -176,10 +177,16 @@ export default function HomeLayout({ children }: HomeLayoutProps) {
               </Dropdown>
             ) : (
               <Space>
-                <Button type="text" onClick={() => router.push("/login")}>
+                <Button
+                  type="text"
+                  onClick={() => router.push(`${ADMIN_BASE_PATH}/login`)}
+                >
                   登录
                 </Button>
-                <Button type="primary" onClick={() => router.push("/register")}>
+                <Button
+                  type="primary"
+                  onClick={() => router.push(`${ADMIN_BASE_PATH}/register`)}
+                >
                   注册
                 </Button>
               </Space>
