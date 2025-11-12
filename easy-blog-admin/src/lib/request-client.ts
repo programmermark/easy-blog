@@ -1,5 +1,5 @@
 import axios from "axios";
-import { tokenCookies, refreshTokenCookies, clearAuthCookies } from "./cookies";
+import { tokenCookies, clearAuthCookies } from "./cookies";
 import { withAdminBasePath } from "@/config/basePath";
 
 const requestClient = axios.create({
@@ -27,32 +27,14 @@ requestClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        const refreshToken = refreshTokenCookies.get();
-        if (!refreshToken) throw new Error("No refresh token");
-
-        // 刷新 token
-        const response = await requestClient.post("/auth/refresh", {
-          refreshToken,
-        });
-
-        const { accessToken } = response.data.data;
-        tokenCookies.set(accessToken);
-
-        // 重新发送请求
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-        return requestClient(originalRequest);
-      } catch (refreshError) {
-        // 刷新失败，清除所有认证 cookie
-        clearAuthCookies();
-        if (typeof window !== "undefined") {
-          window.location.href = withAdminBasePath("/login");
-        }
-        return Promise.reject(refreshError);
+    if (error.response?.status === 401) {
+      clearAuthCookies();
+      if (typeof window !== "undefined") {
+        window.location.href = withAdminBasePath("/login");
       }
+      const authError = new Error("登录状态已过期，请重新登录");
+      (authError as any).statusCode = 401;
+      return Promise.reject(authError);
     }
 
     // 处理其他错误，提取后端返回的错误信息

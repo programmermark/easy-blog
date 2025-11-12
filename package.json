@@ -3,10 +3,9 @@
   "private": true,
   "packageManager": "pnpm@9.15.9",
   "scripts": {
-    "dev": "concurrently \"pnpm --filter easy-blog-service dev\" \"pnpm --filter easy-blog-front dev\" \"pnpm --filter easy-blog-admin dev\""
+    "dev": "concurrently \"pnpm --filter easy-blog-service start:dev\" \"pnpm --filter easy-blog-front dev\" \"pnpm --filter easy-blog-admin dev\""
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
   }
 }
-
