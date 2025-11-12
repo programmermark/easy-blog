@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Modal, Button, Form, Input, message } from "antd";
 import { UserOutlined, MailOutlined, GlobalOutlined } from "@ant-design/icons";
 import { env } from "@/env";
+import { requestClient } from "@/lib/request-client";
+import { Visitor } from "../hooks/useAuth";
 
 interface CommentModalProps {
   open: boolean;
@@ -31,34 +33,16 @@ export default function CommentModal({
       setLoading(true);
 
       // 调用访客登录API
-      const response = await fetch(
-        `${env.NEXT_PUBLIC_API_URL}/visitor/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            nickname: values.nickname,
-            email: values.email,
-            site: values.site || "",
-          }),
-        }
-      );
+      const response = await requestClient.post<Visitor>(`/visitor/login`, {
+        nickname: values.nickname,
+        email: values.email,
+        site: values.site || "",
+      });
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          message.success("登录成功");
-          onLoginSuccess?.(data.data);
-          onClose();
-          form.resetFields();
-        } else {
-          message.error(data.message || "登录失败");
-        }
-      } else {
-        message.error("登录失败，请稍后重试");
-      }
+      message.success("登录成功");
+      onLoginSuccess?.(response);
+      onClose();
+      form.resetFields();
     } catch (error) {
       console.error("Login error:", error);
       message.error("登录失败，请检查输入信息");
