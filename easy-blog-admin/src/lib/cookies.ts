@@ -3,9 +3,12 @@
 import Cookies from "js-cookie";
 
 // Cookie 配置
+const isSecureContext = () =>
+  typeof window !== "undefined" && window.location.protocol === "https:";
+
 const COOKIE_OPTIONS = {
   expires: 7, // 7天过期
-  secure: process.env.NODE_ENV === "production", // 生产环境使用 HTTPS
+  secure: isSecureContext(), // 仅在 HTTPS 环境使用 Secure 标记
   sameSite: "lax" as const, // CSRF 保护
 };
 
