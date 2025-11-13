@@ -154,6 +154,7 @@ jobs:
           username: ${{ secrets.EASY_BLOG_USERNAME }}
           key: ${{ secrets.EASY_BLOG_SSH_KEY }}
           script: |
+            set -euo pipefail
             cd /opt/easy-blog
 
             cat <<'EOF' > .env
@@ -169,10 +170,9 @@ jobs:
 
             docker login ${{ env.REGISTRY }} -u '${{ secrets.ACR_USERNAME }}' -p '${{ secrets.ACR_PASSWORD }}'
 
-            docker-compose -f docker-compose.prod.yml pull
-            docker-compose -f docker-compose.prod.yml down
-            docker-compose -f docker-compose.prod.yml up -d
+            docker compose -f docker-compose.prod.yml pull admin frontend backend
+            docker compose -f docker-compose.prod.yml up -d --remove-orphans --force-recreate admin frontend backend
 
-            docker-compose -f docker-compose.prod.yml exec backend npx prisma migrate deploy
+            docker compose -f docker-compose.prod.yml exec backend npx prisma migrate deploy || true
 
             docker image prune -f

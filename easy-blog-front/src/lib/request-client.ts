@@ -2,15 +2,33 @@ import { env } from "@/env";
 
 const normalizeBaseUrl = (url: string) => url.replace(/\/+$/, "");
 
+const getAccessTokenFromCookie = () => {
+  if (typeof document === "undefined") return undefined;
+  const cookies = document.cookie ? document.cookie.split("; ") : [];
+  const tokenPair = cookies.find((cookie) => cookie.startsWith("accessToken="));
+  if (!tokenPair) return undefined;
+  const [, value] = tokenPair.split("=");
+  return value ? decodeURIComponent(value) : undefined;
+};
+
 const BASE_URL = normalizeBaseUrl(env.NEXT_PUBLIC_API_URL);
 
 async function request<T>(input: string, init?: RequestInit): Promise<T> {
+  const headers = new Headers(init?.headers ?? {});
+  if (!headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
+
+  if (!headers.has("Authorization")) {
+    const token = getAccessTokenFromCookie();
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
+    }
+  }
+
   const res = await fetch(`${BASE_URL}${input}`, {
     ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...(init?.headers || {}),
-    },
+    headers,
     credentials: "include", // 若用 cookie 鉴权
   });
   if (!res.ok) {

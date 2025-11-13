@@ -110,8 +110,6 @@ export class LikeController {
   }
 
   @Get('post/:postId/status')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Check if user liked a post' })
   @ApiParam({ name: 'postId', description: 'Post ID' })
   @ApiResponse({
@@ -126,7 +124,10 @@ export class LikeController {
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   isLikedByUser(@Param('postId') postId: string, @Request() req) {
-    const userId = req.user.id;
+    const userId = req.user?.id;
+    if (!userId) {
+      return { liked: false };
+    }
     return this.likeService.isLikedByUser(postId, userId);
   }
 }
