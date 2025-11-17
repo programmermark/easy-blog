@@ -181,6 +181,25 @@ git config --global credential.helper osxkeychain
 # 之后第一次输入用户名和 token，系统会记住
 ```
 
+## ✅ 已应用的优化配置
+
+已自动配置以下 Git 设置以提高连接稳定性：
+
+```bash
+# 使用 HTTP/1.1（更稳定）
+git config --global http.version HTTP/1.1
+
+# 增加缓冲区大小
+git config --global http.postBuffer 524288000
+
+# 增加超时时间
+git config --global http.lowSpeedLimit 0
+git config --global http.lowSpeedTime 999999
+
+# 确保 SSL 验证开启
+git config --global http.sslVerify true
+```
+
 ## ✅ 验证修复
 
 修复后，运行以下命令验证：
@@ -194,6 +213,35 @@ git branch -r
 
 # 尝试 pull
 git pull origin main
+```
+
+## 🔄 如果仍然失败
+
+### 临时解决方案：稍后重试
+
+网络连接问题通常是临时的，可以：
+
+1. 等待几分钟后重试
+2. 检查网络连接是否正常
+3. 尝试访问 https://github.com 看是否能打开
+
+### 使用镜像源（如果在中国大陆）
+
+如果网络环境受限，可以考虑使用 GitHub 镜像：
+
+```bash
+# 使用 GitHub 镜像（示例）
+git remote set-url origin https://ghproxy.com/https://github.com/programmermark/easy-blog.git
+```
+
+### 检查当前 Git 配置
+
+```bash
+# 查看所有 Git 配置
+git config --global --list | grep http
+
+# 查看远程 URL
+git remote -v
 ```
 
 ---
