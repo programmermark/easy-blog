@@ -13,6 +13,7 @@ import { UploadModule } from './modules/upload/upload.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { LikeModule } from './modules/like/like.module';
 import { VisitorModule } from './modules/visitor/visitor.module';
+import { AIModule } from './modules/ai/ai.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { VisitorModule } from './modules/visitor/visitor.module';
     CommentModule,
     LikeModule,
     VisitorModule,
+    AIModule,
   ],
   controllers: [AppController],
   providers: [AppService],

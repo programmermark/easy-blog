@@ -28,8 +28,8 @@ requestClient.interceptors.response.use(
     const originalRequest = error.config;
 
     if (error.response?.status === 401) {
-      clearAuthCookies();
-      if (typeof window !== "undefined") {
+        clearAuthCookies();
+        if (typeof window !== "undefined") {
         window.location.href = withAdminBasePath("/login");
       }
       const authError = new Error("登录状态已过期，请重新登录");
