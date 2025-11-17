@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -20,6 +21,8 @@ import {
   UndoOutlined,
   RedoOutlined,
 } from "@ant-design/icons";
+import AIEditorToolbar from "./AIEditorToolbar";
+import AIWritingPanel from "./AIWritingPanel";
 
 interface PostEditorProps {
   content: string;
@@ -32,6 +35,7 @@ export default function PostEditor({
   onChange,
   placeholder,
 }: PostEditorProps) {
+  const [aiPanelVisible, setAiPanelVisible] = useState(false);
   const lowlight = createLowlight();
 
   const editor = useEditor({
@@ -147,8 +151,23 @@ export default function PostEditor({
             onClick={() => editor.chain().focus().redo().run()}
             size="small"
           />
+
+          <Divider type="vertical" />
+
+          <AIEditorToolbar
+            editor={editor}
+            onOpenWritingPanel={() => setAiPanelVisible(true)}
+          />
         </Space>
       </div>
+
+      <AIWritingPanel
+        visible={aiPanelVisible}
+        onClose={() => setAiPanelVisible(false)}
+        onInsert={(content) => {
+          editor.chain().focus().insertContent(content).run();
+        }}
+      />
 
       <EditorContent
         editor={editor}
