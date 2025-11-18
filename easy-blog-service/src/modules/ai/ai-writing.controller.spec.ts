@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AIWritingController } from './ai-writing.controller';
 import { AIService } from './ai.service';
+import { TitleStyle } from './dto/ai-writing.dto';
 
 describe('AIWritingController', () => {
   let controller: AIWritingController;
@@ -49,7 +50,7 @@ describe('AIWritingController', () => {
     });
 
     it('should generate title with style', async () => {
-      const dto = { content: 'test content', style: 'attractive' as const };
+      const dto = { content: 'test content', style: TitleStyle.ATTRACTIVE };
       const expectedTitle = 'Attractive Title';
       mockAIService.generateTitle.mockResolvedValue(expectedTitle);
 
