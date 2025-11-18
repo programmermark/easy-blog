@@ -166,7 +166,31 @@ jobs:
             NEXT_PUBLIC_UPLOAD_URL=${{ secrets.NEXT_PUBLIC_UPLOAD_URL }}
             EOF
 
-            git pull origin main
+            # 配置 Git 以提高连接稳定性
+            git config pull.rebase false || true
+            git config http.version HTTP/1.1 || true
+            git config http.postBuffer 524288000 || true
+            git config http.lowSpeedLimit 0 || true
+            git config http.lowSpeedTime 999999 || true
+
+            # 拉取代码（带重试机制）
+            MAX_RETRIES=3
+            RETRY_COUNT=0
+            while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+              if git pull origin main; then
+                echo "✅ Git pull 成功"
+                break
+              else
+                RETRY_COUNT=$((RETRY_COUNT + 1))
+                if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+                  echo "⚠️ Git pull 失败，${RETRY_COUNT}/${MAX_RETRIES} 次重试，等待 10 秒后重试..."
+                  sleep 10
+                else
+                  echo "❌ Git pull 失败，已达到最大重试次数"
+                  exit 1
+                fi
+              fi
+            done
 
             docker login ${{ env.REGISTRY }} -u '${{ secrets.ACR_USERNAME }}' -p '${{ secrets.ACR_PASSWORD }}'
 
